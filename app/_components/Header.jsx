@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Header() {
   return (
-    <section className="flex items-between justify-between w-full h-20 px-8 bg-white shadow-sm">
+    <section className="flex items-between font-text justify-between w-full h-20 px-8 bg-white shadow-sm">
       <div className="flex items-center">
         <Link href="/">
           <Image src="/logo.svg" width={150} height={60} alt="Logo" priority />
