@@ -13,7 +13,7 @@ export default function Header() {
         </Link>
 
         <nav className="hidden md:flex ml-10 space-x-4">
-          <Link href="/about" className="text-gray-900 hover:underline">
+          <Link href="/about" className="text-gray-900 hover:text-brand">
             For Sale
           </Link>
           <Link href="/contact" className="text-gray-900 hover:underline">
