@@ -33,7 +33,7 @@ export default function Header() {
         </Button>
 
         <Button asChild variant="outline">
-          <Link href="/login">Login</Link>
+          <Link href="/auth/login">Login</Link>
         </Button>
       </div>
     </section>
