@@ -1,10 +1,17 @@
+"use client";
 import Link from "next/link";
-import React from "react";
+import React, { use, useEffect } from "react";
 import Image from "next/image";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
+  const path = usePathname();
+
+  useEffect(() => {
+    console.log("Current path:", path);
+  }, [path]);
   return (
     <section className="flex items-between font-text justify-between w-full h-20 px-8 bg-white shadow-sm fixed top-0 z-50">
       <div className="flex items-center">
