@@ -28,20 +28,26 @@ export default function Header() {
 
         <nav className="hidden md:flex ml-10 space-x-4">
           <Link
-            href="/about"
-            className="text-gray-900 hover:text-[var(--brand)] text-sm"
+            href="/for-sale"
+            className={`text-gray-900 hover:text-[var(--brand)] text-sm ${
+              path === "/for-sale" ? "text-brand font-semibold" : ""
+            }`}
           >
             For Sale
           </Link>
           <Link
-            href="/contact"
-            className="text-gray-900 hover:text-[var(--brand)] text-sm"
+            href="/for-rent"
+            className={`text-gray-900 hover:text-[var(--brand)] text-sm ${
+              path === "/for-rent" ? "text-brand font-semibold" : ""
+            }`}
           >
             For Rent
           </Link>
           <Link
-            href="/services"
-            className="text-gray-900 hover:text-[var(--brand)] text-sm"
+            href="/agents"
+            className={`text-gray-900 hover:text-[var(--brand)] text-sm ${
+              path === "/agents" ? "text-brand font-semibold" : ""
+            }`}
           >
             Agent Finder
           </Link>
