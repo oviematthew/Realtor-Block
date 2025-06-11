@@ -46,7 +46,7 @@ export default function Header() {
               path === "/agents" ? "text-brand font-semibold" : ""
             }`}
           >
-            Agent Finder
+            Agent Finding
           </Link>
         </nav>
       </div>
