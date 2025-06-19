@@ -5,9 +5,11 @@ import Image from "next/image";
 import { Plus } from "lucide-react";
 import { Button } from "../../@/components/ui/button";
 import { usePathname } from "next/navigation";
+import { UserButton, useUser } from "@clerk/nextjs";
 
 export default function Header() {
   const path = usePathname();
+  const { user } = useUser();
 
   return (
     <section className="flex items-between font-text justify-between w-full h-20 px-8 bg-white shadow-sm fixed top-0 z-50">
@@ -46,7 +48,7 @@ export default function Header() {
               path === "/agents" ? "text-brand font-semibold" : ""
             }`}
           >
-            Agent Finding
+            Agent Finder
           </Link>
         </nav>
       </div>
@@ -57,10 +59,21 @@ export default function Header() {
             <Plus /> Post Your Ad
           </Link>
         </Button>
-
-        <Button asChild variant="outline">
-          <Link href="/auth/login">Login</Link>
-        </Button>
+        {user ? (
+          <UserButton
+            userProfileMode="navigation"
+            appearance={{
+              elements: {
+                userButtonAvatarBox: "w-10 h-10",
+                userButtonAvatar: "w-10 h-10 rounded-full",
+              },
+            }}
+          />
+        ) : (
+          <Button asChild variant="outline">
+            <Link href="sign-in">Login</Link>
+          </Button>
+        )}
       </div>
     </section>
   );

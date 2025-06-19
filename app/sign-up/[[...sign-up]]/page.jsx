@@ -6,7 +6,7 @@ export default function Page() {
   return (
     <div className="mt-20 flex w-full py-10 px-5 md:px-10 gap-5 items-center justify-center md:justify-between h-screen">
       <Image
-        src="/auth/auth-image.jpg"
+        src="/auth/auth-image-signup.jpg"
         alt="auth image"
         width={1200}
         height={700}
