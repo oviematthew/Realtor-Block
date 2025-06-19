@@ -3,7 +3,7 @@ import Link from "next/link";
 import React, { use, useEffect } from "react";
 import Image from "next/image";
 import { Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "../../@/components/ui/button";
 import { usePathname } from "next/navigation";
 
 export default function Header() {
