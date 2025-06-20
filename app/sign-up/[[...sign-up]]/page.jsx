@@ -4,9 +4,9 @@ import Image from "next/image";
 
 export default function Page() {
   return (
-    <div className="mt-20 flex w-full py-10 px-5 md:px-10 gap-5 items-center justify-center md:justify-between h-screen">
+    <div className="mt-20 flex w-full py-10 px-5 md:px-10 gap-5 items-center justify-center md:justify-between min-h-screen">
       <div className="flex justify-center signin w-full lg:w-1/2">
-        <SignUp />
+        <SignUp oauthFlow="popup" />
       </div>
       <div className="hidden lg:block lg:w-1/2 ">
         <Image
