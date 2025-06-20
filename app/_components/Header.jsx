@@ -60,15 +60,7 @@ export default function Header() {
           </Link>
         </Button>
         {user ? (
-          <UserButton
-            userProfileMode="navigation"
-            appearance={{
-              elements: {
-                userButtonAvatarBox: "w-10 h-10",
-                userButtonAvatar: "w-10 h-10 rounded-full",
-              },
-            }}
-          />
+          <UserButton />
         ) : (
           <Button asChild variant="outline">
             <Link href="sign-in">Login</Link>
