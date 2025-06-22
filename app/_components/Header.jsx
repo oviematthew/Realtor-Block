@@ -60,7 +60,10 @@ export default function Header() {
           </Link>
         </Button>
         {user ? (
-          <UserButton />
+          <div className="user-profile flex items-center space-x-2">
+            <UserButton />
+            <p>{user.firstName}</p>
+          </div>
         ) : (
           <Button asChild variant="outline">
             <Link href="sign-in">Login</Link>
