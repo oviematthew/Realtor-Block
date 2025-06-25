@@ -12,7 +12,7 @@ export default function Header() {
   const { user } = useUser();
 
   return (
-    <section className="flex items-between font-text justify-between w-full h-20 px-8 bg-white shadow-sm fixed top-0 z-50">
+    <section className="flex items-between font-text justify-between w-full h-20 px-8 bg-white shadow-sm fixed top-0 z-50 ">
       <div className="flex items-center">
         <Link href="/">
           <Image
@@ -55,7 +55,7 @@ export default function Header() {
 
       <div className="right-div flex items-center ml-auto space-x-4">
         <Button asChild className="bg-brand hover:bg-brand-dark text-white">
-          <Link href="/post-ad">
+          <Link href="/add-new-listing">
             <Plus /> Post Your Ad
           </Link>
         </Button>

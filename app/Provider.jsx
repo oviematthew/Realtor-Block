@@ -5,7 +5,7 @@ export default function Provider({ children }) {
   return (
     <div>
       <Header />
-      <div>{children}</div>
+      <div className="mt-20">{children}</div>
     </div>
   );
 }
