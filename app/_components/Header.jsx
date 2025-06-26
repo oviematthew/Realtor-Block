@@ -62,7 +62,6 @@ export default function Header() {
         {user ? (
           <div className="user-profile flex items-center space-x-2">
             <UserButton />
-            <p>{user.firstName}</p>
           </div>
         ) : (
           <Button asChild variant="outline">

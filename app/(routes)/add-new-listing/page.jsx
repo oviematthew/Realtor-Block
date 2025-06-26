@@ -1,8 +1,30 @@
 "use client";
-import React from "react";
-import Autocomplete from "react-google-autocomplete";
+import React, { useEffect } from "react";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import GoogleAddressSearch from "../../_components/GoogleAddressSearch";
 
 export default function AddNewListing() {
+  const { user, isLoaded } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLoaded && !user) {
+      router.push("/sign-in");
+    }
+  }, [isLoaded, user, router]);
+
+  // ✅ Don't render anything until Clerk is loaded
+  if (!isLoaded) {
+    return <div className="text-center p-10">Loading...</div>;
+  }
+
+  // ✅ If user is not logged in, we already redirected – return null
+  if (!user) {
+    return null;
+  }
+
+  // ✅ If user is loaded and logged in, render page
   return (
     <div className="p-10 flex flex-col items-center justify-center">
       <h2 className="font-bold text-2xl">Add New Listing</h2>
@@ -10,16 +32,7 @@ export default function AddNewListing() {
         <p className="text-gray-500 mb-2 text-center">
           Enter address you want to list
         </p>
-        <Autocomplete
-          apiKey={process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}
-          onPlaceSelected={(place) => console.log(place)}
-          options={{
-            types: ["address"], // 👈 allow street-level autocomplete
-            componentRestrictions: { country: "ca" }, //limit to Canada
-          }}
-          className="w-full p-2 border border-gray-300 rounded"
-          placeholder="123 Main St, Toronto, ON"
-        />
+        <GoogleAddressSearch />
       </div>
     </div>
   );
