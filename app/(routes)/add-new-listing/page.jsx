@@ -3,6 +3,8 @@ import React, { useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import GoogleAddressSearch from "../../_components/GoogleAddressSearch";
+import { Button } from "../../../@/components/ui/button";
+import Link from "next/link";
 
 export default function AddNewListing() {
   const { user, isLoaded } = useUser();
@@ -28,11 +30,15 @@ export default function AddNewListing() {
   return (
     <div className="p-10 flex flex-col items-center justify-center">
       <h2 className="font-bold text-2xl">Add New Listing</h2>
-      <div className="mt-5 w-full max-w-md">
-        <p className="text-gray-500 mb-2 text-center">
-          Enter address you want to list
-        </p>
+      <div className="mt-5 w-full max-w-3xl p-10 rounded-lg boder shadow-md flex flex-col items-center">
         <GoogleAddressSearch />
+
+        <Button
+          asChild
+          className="bg-brand hover:bg-brand-dark text-white mt-5 w-full"
+        >
+          <Link href="/add-new-listing">Next</Link>
+        </Button>
       </div>
     </div>
   );

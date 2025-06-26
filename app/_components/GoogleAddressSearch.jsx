@@ -18,8 +18,8 @@ export default function GoogleAddressSearch() {
   );
 
   return (
-    <div className="flex items-center relative">
-      <MapPin className="text-brand absolute left-2 top-2" />
+    <div className="w-full flex gap-1 items-center relative">
+      <MapPin className="text-brand h-10 w-10 rounded-l-lg bg-blue-100" />
       <Autocomplete
         apiKey={process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}
         onPlaceSelected={handlePlaceSelected}
@@ -28,7 +28,7 @@ export default function GoogleAddressSearch() {
           componentRestrictions: { country: "ca" },
         }}
         className="w-full p-2 border border-blue-500 rounded text-center"
-        placeholder="123 Main St, Toronto, ON"
+        placeholder="Enter Address you want to list"
       />
     </div>
   );
