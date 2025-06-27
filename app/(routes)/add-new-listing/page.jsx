@@ -5,10 +5,13 @@ import { useRouter } from "next/navigation";
 import GoogleAddressSearch from "../../_components/GoogleAddressSearch";
 import { Button } from "../../../@/components/ui/button";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function AddNewListing() {
   const { user, isLoaded } = useUser();
   const router = useRouter();
+  const [selectedAddress, setSelectedAddress] = useState("");
+  const [coordinates, setCoordinates] = useState("");
 
   useEffect(() => {
     if (isLoaded && !user) {

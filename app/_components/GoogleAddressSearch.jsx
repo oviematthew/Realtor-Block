@@ -4,17 +4,31 @@ import Autocomplete from "react-google-autocomplete";
 import { MapPin } from "lucide-react";
 import debounce from "lodash.debounce";
 
-export default function GoogleAddressSearch() {
+export default function GoogleAddressSearch({
+  selectedAddress,
+  latitude,
+  longitude,
+}) {
   const [address, setAddress] = useState("");
 
   // ✅ Debounced callback (runs 500ms after place changes)
   const handlePlaceSelected = useCallback(
     debounce((place) => {
-      const formatted = place?.formatted_address || "";
-      setAddress(formatted);
-      console.log("Selected Address:", formatted);
+      if (!place) return;
+
+      const formattedAddress = place.formatted_address || "";
+      selectedAddress(formattedAddress);
+      const lat = place.geometry?.location?.lat();
+      latitude(lat);
+      const lng = place.geometry?.location?.lng();
+      longitude(lng);
+
+      setAddress(formattedAddress);
+      console.log("Selected Address:", formattedAddress);
+      console.log("Latitude:", lat);
+      console.log("Longitude:", lng);
     }, 500),
-    [] // ✅ dependencies (memoized once)
+    [] // This empty array ensures the function is created only once
   );
 
   return (
