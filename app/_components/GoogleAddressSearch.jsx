@@ -9,8 +9,6 @@ export default function GoogleAddressSearch({
   latitude,
   longitude,
 }) {
-  const [address, setAddress] = useState("");
-
   // ✅ Debounced callback (runs 500ms after place changes)
   const handlePlaceSelected = useCallback(
     debounce((place) => {
@@ -22,11 +20,6 @@ export default function GoogleAddressSearch({
       latitude(lat);
       const lng = place.geometry?.location?.lng();
       longitude(lng);
-
-      setAddress(formattedAddress);
-      console.log("Selected Address:", formattedAddress);
-      console.log("Latitude:", lat);
-      console.log("Longitude:", lng);
     }, 500),
     [] // This empty array ensures the function is created only once
   );
@@ -41,7 +34,7 @@ export default function GoogleAddressSearch({
           types: ["address"],
           componentRestrictions: { country: "ca" },
         }}
-        className="w-full p-2 border border-blue-500 rounded text-center"
+        className="w-full p-2 border border-blue-500 font-text rounded text-center"
         placeholder="Enter Address you want to list"
       />
     </div>

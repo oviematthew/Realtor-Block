@@ -16,7 +16,7 @@ export default function Page() {
         />
       </div>
       <div className="flex justify-center signin w-full lg:w-1/2">
-        <SignIn oauthFlow="popup" />
+        <SignIn />
       </div>
     </div>
   );

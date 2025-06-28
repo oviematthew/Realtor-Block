@@ -6,18 +6,58 @@ import GoogleAddressSearch from "../../_components/GoogleAddressSearch";
 import { Button } from "../../../@/components/ui/button";
 import Link from "next/link";
 import { useState } from "react";
+import { supabase } from "../../../utils/supabase/client";
 
 export default function AddNewListing() {
   const { user, isLoaded } = useUser();
   const router = useRouter();
   const [selectedAddress, setSelectedAddress] = useState("");
-  const [coordinates, setCoordinates] = useState("");
+  const [coordinates, setCoordinates] = useState({
+    latitude: null,
+    longitude: null,
+  });
 
   useEffect(() => {
     if (isLoaded && !user) {
       router.push("/sign-in");
     }
   }, [isLoaded, user, router]);
+
+  async function handleAddressSubmit() {
+    if (!selectedAddress || !coordinates.latitude || !coordinates.longitude) {
+      console.error("Missing address or coordinates");
+      return;
+    }
+
+    console.log("Attempting to insert:", {
+      createdBy: user?.primaryEmailAddress?.emailAddress,
+      address: selectedAddress,
+      coordinates,
+    });
+
+    // Insert the new listing into the database
+    // Ensure supabase client is initialized correctly
+    const { data, error } = await supabase.from("listing").insert([
+      {
+        createdBy: user?.primaryEmailAddress?.emailAddress,
+        address: selectedAddress,
+        coordinates: {
+          latitude: coordinates.latitude,
+          longitude: coordinates.longitude,
+        },
+      },
+    ]);
+
+    if (error) {
+      console.error("Error inserting listing:", error);
+      return;
+    } else {
+      console.log("Listing inserted successfully:", data);
+
+      // Redirect
+      // router.push(`/listing/${data[0].id}`);
+    }
+  }
 
   // ✅ Don't render anything until Clerk is loaded
   if (!isLoaded) {
@@ -32,15 +72,24 @@ export default function AddNewListing() {
   // ✅ If user is loaded and logged in, render page
   return (
     <div className="p-10 flex flex-col items-center justify-center">
-      <h2 className="font-bold text-2xl">Add New Listing</h2>
+      <h2 className="font-bold text-2xl font-text">Add New Listing</h2>
       <div className="mt-5 w-full max-w-3xl p-10 rounded-lg boder shadow-md flex flex-col items-center">
-        <GoogleAddressSearch />
+        <GoogleAddressSearch
+          selectedAddress={(value) => setSelectedAddress(value)}
+          latitude={(lat) =>
+            setCoordinates((prev) => ({ ...prev, latitude: lat }))
+          }
+          longitude={(lng) =>
+            setCoordinates((prev) => ({ ...prev, longitude: lng }))
+          }
+        />
 
         <Button
-          asChild
-          className="bg-brand hover:bg-brand-dark text-white mt-5 w-full"
+          className="bg-brand hover:bg-brand-dark hover:cursor-pointer font-text text-white mt-5 w-full"
+          onClick={handleAddressSubmit}
+          disabled={!selectedAddress}
         >
-          <Link href="/add-new-listing">Next</Link>
+          Next
         </Button>
       </div>
     </div>
