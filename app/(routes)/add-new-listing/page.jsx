@@ -37,25 +37,30 @@ export default function AddNewListing() {
 
     // Insert the new listing into the database
     // Ensure supabase client is initialized correctly
-    const { data, error } = await supabase.from("listing").insert([
-      {
-        createdBy: user?.primaryEmailAddress?.emailAddress,
-        address: selectedAddress,
-        coordinates: {
-          latitude: coordinates.latitude,
-          longitude: coordinates.longitude,
+    const { data, error } = await supabase
+      .from("listing")
+      .insert([
+        {
+          createdBy: user?.primaryEmailAddress?.emailAddress,
+          address: selectedAddress,
+          coordinates: {
+            latitude: coordinates.latitude,
+            longitude: coordinates.longitude,
+          },
         },
-      },
-    ]);
+      ])
+      .select();
 
-    if (error) {
-      console.error("Error inserting listing:", error);
-      return;
-    } else {
+    if (data) {
       console.log("Listing inserted successfully:", data);
 
       // Redirect
       // router.push(`/listing/${data[0].id}`);
+    }
+
+    if (error) {
+      console.error("Error inserting listing:", error);
+      return;
     }
   }
 

@@ -6,7 +6,7 @@ export default function Page() {
   return (
     <div className="flex w-full py-10 px-5 md:px-10 gap-5 items-center justify-center md:justify-between min-h-screen">
       <div className="flex justify-center signin w-full lg:w-1/2">
-        <SignUp oauthFlow="popup" />
+        <SignUp />
       </div>
       <div className="hidden lg:block lg:w-1/2 ">
         <Image
