@@ -7,6 +7,7 @@ import { Button } from "../../../@/components/ui/button";
 import Link from "next/link";
 import { useState } from "react";
 import { supabase } from "../../../utils/supabase/client";
+import { toast } from "sonner";
 
 export default function AddNewListing() {
   const { user, isLoaded } = useUser();
@@ -53,6 +54,7 @@ export default function AddNewListing() {
 
     if (data) {
       console.log("Listing inserted successfully:", data);
+      toast.success("Listing added successfully!");
 
       // Redirect
       // router.push(`/listing/${data[0].id}`);
@@ -60,6 +62,7 @@ export default function AddNewListing() {
 
     if (error) {
       console.error("Error inserting listing:", error);
+      toast.error("Failed to add listing. Please try again.");
       return;
     }
   }
