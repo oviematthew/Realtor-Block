@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { supabase } from "../../../utils/supabase/client";
 import { toast } from "sonner";
+import { Loader } from "lucide-react";
 
 export default function AddNewListing() {
   const { user, isLoaded } = useUser();
@@ -17,6 +18,7 @@ export default function AddNewListing() {
     latitude: null,
     longitude: null,
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (isLoaded && !user) {
@@ -26,9 +28,11 @@ export default function AddNewListing() {
 
   async function handleAddressSubmit() {
     if (!selectedAddress || !coordinates.latitude || !coordinates.longitude) {
-      console.error("Missing address or coordinates");
+      toast.error("Missing address or coordinates");
       return;
     }
+
+    setLoading(true);
 
     console.log("Attempting to insert:", {
       createdBy: user?.primaryEmailAddress?.emailAddress,
@@ -55,13 +59,14 @@ export default function AddNewListing() {
     if (data) {
       console.log("Listing inserted successfully:", data);
       toast.success("Listing added successfully!");
+      setLoading(false);
 
       // Redirect
       // router.push(`/listing/${data[0].id}`);
     }
 
     if (error) {
-      console.error("Error inserting listing:", error);
+      setLoading(false);
       toast.error("Failed to add listing. Please try again.");
       return;
     }
@@ -95,9 +100,9 @@ export default function AddNewListing() {
         <Button
           className="bg-brand hover:bg-brand-dark hover:cursor-pointer font-text text-white mt-5 w-full"
           onClick={handleAddressSubmit}
-          disabled={!selectedAddress}
+          disabled={!selectedAddress || loading}
         >
-          Next
+          {loading ? <Loader className="w-4 h-4 animate-spin" /> : "Next"}
         </Button>
       </div>
     </div>
