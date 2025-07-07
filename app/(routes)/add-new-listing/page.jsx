@@ -56,13 +56,13 @@ export default function AddNewListing() {
       ])
       .select();
 
-    if (data) {
-      console.log("Listing inserted successfully:", data);
+    if (data && data.length > 0) {
+      const listingId = data[0].id;
       toast.success("Listing added successfully!");
       setLoading(false);
 
-      // Redirect
-      // router.push(`/listing/${data[0].id}`);
+      // ✅ Redirect to the edit page
+      router.push(`/edit-listing/${listingId}`);
     }
 
     if (error) {
