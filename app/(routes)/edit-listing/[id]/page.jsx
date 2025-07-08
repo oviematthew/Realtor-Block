@@ -6,6 +6,11 @@ import { useParams, useRouter } from "next/navigation";
 import { supabase } from "../../../../utils/supabase/client";
 import { toast } from "sonner";
 import { Loader } from "lucide-react";
+import { Label } from "../../../../@/components/ui/label";
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from "../../../../@/components/ui/radio-group";
 
 export default function EditListing() {
   const { user, isLoaded } = useUser();
@@ -15,20 +20,6 @@ export default function EditListing() {
 
   const [loading, setLoading] = useState(true);
   const [listing, setListing] = useState(null);
-
-  const [formData, setFormData] = useState({
-    type: "",
-    propertyType: "",
-    bedroom: "",
-    bathroom: "",
-    builtIn: "",
-    parking: "",
-    lotSize: "",
-    area: "",
-    price: "",
-    hoa: "",
-    description: "",
-  });
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -71,20 +62,6 @@ export default function EditListing() {
 
     setListing(data);
 
-    setFormData({
-      type: data.type || "",
-      propertyType: data.propertyType || "",
-      bedroom: data.bedroom || "",
-      bathroom: data.bathroom || "",
-      builtIn: data.builtIn || "",
-      parking: data.parking || "",
-      lotSize: data.lotSize || "",
-      area: data.area || "",
-      price: data.price || "",
-      hoa: data.hoa || "",
-      description: data.description || "",
-    });
-
     setLoading(false);
   }
 
@@ -125,6 +102,19 @@ export default function EditListing() {
     <div className="px-5 md:px-10 py-10 max-w-3xl mx-auto">
       <h2 className="font-bold text-xl font-text mb-5">Edit Listing Details</h2>
 
+      <RadioGroup defaultValue="rent">
+        <div className="flex gap-5 mb-5">
+          <div className="flex items-center gap-3">
+            <RadioGroupItem value="rent" id="rent" />
+            <Label htmlFor="rent">Rent</Label>
+          </div>
+          <div className="flex items-center gap-3">
+            <RadioGroupItem value="sell" id="sell" />
+            <Label htmlFor="sell">Sell</Label>
+          </div>
+        </div>
+      </RadioGroup>
+
       {/* Address and coordinates (read-only) */}
       <div className="mb-5 space-y-1">
         <label className="block font-semibold text-sm">Address</label>
@@ -138,58 +128,6 @@ export default function EditListing() {
           {listing.coordinates?.longitude}
         </p> */}
       </div>
-
-      {/* Editable Fields */}
-      <form onSubmit={handleUpdate} className="space-y-4">
-        {[
-          "type",
-          "propertyType",
-          "bedroom",
-          "bathroom",
-          "builtIn",
-          "parking",
-          "lotSize",
-          "area",
-          "price",
-          "hoa",
-        ].map((field) => (
-          <div key={field}>
-            <label className="block font-medium capitalize text-sm">
-              {field}
-            </label>
-            <input
-              type="text"
-              name={field}
-              value={formData[field]}
-              onChange={handleChange}
-              className="w-full border rounded-md p-2"
-            />
-          </div>
-        ))}
-
-        <div>
-          <label className="block font-medium text-sm">Description</label>
-          <textarea
-            name="description"
-            rows="5"
-            value={formData.description}
-            onChange={handleChange}
-            className="w-full border rounded-md p-2"
-          />
-        </div>
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-brand text-white px-4 py-2 rounded-md hover:bg-brand-dark"
-        >
-          {loading ? (
-            <Loader className="w-4 h-4 animate-spin" />
-          ) : (
-            "Save Listing"
-          )}
-        </button>
-      </form>
     </div>
   );
 }
