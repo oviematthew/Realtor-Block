@@ -11,6 +11,13 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "../../../../@/components/ui/radio-group";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../../../@/components/ui/select";
 
 export default function EditListing() {
   const { user, isLoaded } = useUser();
@@ -100,21 +107,40 @@ export default function EditListing() {
 
   return (
     <div className="px-5 md:px-10 py-10 max-w-3xl mx-auto">
-      <h2 className="font-bold text-xl font-text mb-5">Edit Listing Details</h2>
+      <div className="flex items-center justify-between mb-5">
+        <div>
+          <h2 className="font-bold text-xl font-text mb-5">
+            Edit Listing Details
+          </h2>
 
-      <RadioGroup defaultValue="rent">
-        <div className="flex gap-5 mb-5">
-          <div className="flex items-center gap-3">
-            <RadioGroupItem value="rent" id="rent" />
-            <Label htmlFor="rent">Rent</Label>
-          </div>
-          <div className="flex items-center gap-3">
-            <RadioGroupItem value="sell" id="sell" />
-            <Label htmlFor="sell">Sell</Label>
-          </div>
+          <RadioGroup defaultValue="rent">
+            <div className="flex gap-5 mb-5">
+              <div className="flex items-center gap-3">
+                <RadioGroupItem value="rent" id="rent" />
+                <Label htmlFor="rent">Rent</Label>
+              </div>
+              <div className="flex items-center gap-3">
+                <RadioGroupItem value="sell" id="sell" />
+                <Label htmlFor="sell">Sell</Label>
+              </div>
+            </div>
+          </RadioGroup>
         </div>
-      </RadioGroup>
 
+        <div className="flex items-center flex-col">
+          <h2 className="font-bold text-xl font-text mb-5">Bedrooms</h2>
+          <Select>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Bedroom" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="1">1</SelectItem>
+              <SelectItem value="2">2</SelectItem>
+              <SelectItem value="3">3</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
       {/* Address and coordinates (read-only) */}
       <div className="mb-5 space-y-1">
         <label className="block font-semibold text-sm">Address</label>
