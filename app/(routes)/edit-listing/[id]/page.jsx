@@ -24,7 +24,7 @@ export default function EditListing() {
   const router = useRouter();
   const { id } = useParams(); // Grab the listing ID from URL
   const [unauthorized, setUnauthorized] = useState(false);
-
+  const [count, setCount] = useState(5);
   const [loading, setLoading] = useState(true);
   const [listing, setListing] = useState(null);
 
@@ -39,6 +39,16 @@ export default function EditListing() {
     fetchListing();
   }, [isLoaded, user]);
 
+  useEffect(() => {
+    if (unauthorized && count > 0) {
+      const interval = setInterval(() => {
+        setCount((prev) => prev - 1);
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [unauthorized, count]);
+
   async function fetchListing() {
     const { data, error } = await supabase
       .from("listing")
@@ -48,14 +58,13 @@ export default function EditListing() {
 
     if (error || !data) {
       toast.error("Failed to fetch listing");
-      router.push("/"); // Or some safe page
+      router.push("/");
       return;
     }
 
-    // Unauthorized check
     if (data.createdBy !== user?.primaryEmailAddress?.emailAddress) {
+      setUnauthorized(true);
       setLoading(false);
-      setUnauthorized(true); // We'll add state for this
       setTimeout(() => {
         router.push("/");
       }, 5000);
@@ -68,7 +77,6 @@ export default function EditListing() {
     }
 
     setListing(data);
-
     setLoading(false);
   }
 
@@ -79,7 +87,6 @@ export default function EditListing() {
 
   async function handleUpdate(e) {
     e.preventDefault();
-
     setLoading(true);
 
     const { error } = await supabase
@@ -106,54 +113,73 @@ export default function EditListing() {
   }
 
   return (
-    <div className="px-5 md:px-10 py-10 max-w-3xl mx-auto">
-      <div className="flex items-center justify-between mb-5">
-        <div>
-          <h2 className="font-bold text-xl font-text mb-5">
-            Edit Listing Details
+    <>
+      {unauthorized ? (
+        <div className="p-10 text-center">
+          <h2 className="text-lg font-semibold mb-5">
+            You are not authorized to edit this listing.
           </h2>
-
-          <RadioGroup defaultValue="rent">
-            <div className="flex gap-5 mb-5">
-              <div className="flex items-center gap-3">
-                <RadioGroupItem value="rent" id="rent" />
-                <Label htmlFor="rent">Rent</Label>
+          <p className="text-sm text-gray-500 mb-5">
+            Redirecting you back to the homepage in {count} second
+            {count === 1 ? "" : "s"}...
+          </p>
+        </div>
+      ) : (
+        <div className="px-5 md:px-10 py-10 max-w-3xl mx-auto">
+          <div className="">
+            <h2 className="font-bold text-2xl font-text mb-5">
+              Edit Listing Details
+            </h2>
+            <hr className="mb-5" />
+            <div className="flex justify-between items-center mb-5">
+              <div>
+                <h2 className="font-semibold text-lg font-text mb-5">
+                  Rent Or Sell
+                </h2>
+                <RadioGroup defaultValue="rent">
+                  <div className="flex gap-5 mb-5">
+                    <div className="flex items-center gap-3">
+                      <RadioGroupItem value="rent" id="rent" />
+                      <Label htmlFor="rent">Rent</Label>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <RadioGroupItem value="sell" id="sell" />
+                      <Label htmlFor="sell">Sell</Label>
+                    </div>
+                  </div>
+                </RadioGroup>
               </div>
-              <div className="flex items-center gap-3">
-                <RadioGroupItem value="sell" id="sell" />
-                <Label htmlFor="sell">Sell</Label>
+
+              <div className="flex flex-col">
+                <h2 className="font-semibold text-lg font-text mb-5">
+                  Property Type
+                </h2>
+                <Select>
+                  <SelectTrigger className="w-[180px] hover:cursor-pointer">
+                    <SelectValue placeholder="Property Type" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    <SelectItem value="Single Family House">
+                      Single Family House
+                    </SelectItem>
+                    <SelectItem value="Town House">Town House</SelectItem>
+                    <SelectItem value="Condo">Condo</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
-          </RadioGroup>
-        </div>
+          </div>
 
-        <div className="flex items-center flex-col">
-          <h2 className="font-bold text-xl font-text mb-5">Bedrooms</h2>
-          <Select>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Bedroom" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="1">1</SelectItem>
-              <SelectItem value="2">2</SelectItem>
-              <SelectItem value="3">3</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="mb-5 space-y-1">
+            <label className="block font-semibold text-sm">Address</label>
+            <input
+              disabled
+              value={listing?.address || ""}
+              className="w-full border rounded-md p-2 bg-gray-100"
+            />
+          </div>
         </div>
-      </div>
-      {/* Address and coordinates (read-only) */}
-      <div className="mb-5 space-y-1">
-        <label className="block font-semibold text-sm">Address</label>
-        <input
-          disabled
-          value={listing?.address || ""}
-          className="w-full border rounded-md p-2 bg-gray-100"
-        />
-        {/* <p className="text-sm text-gray-500">
-          Coordinates: {listing.coordinates?.latitude},{" "}
-          {listing.coordinates?.longitude}
-        </p> */}
-      </div>
-    </div>
+      )}
+    </>
   );
 }
