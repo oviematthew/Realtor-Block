@@ -40,16 +40,19 @@ export default function EditListing() {
   }, [isLoaded, user]);
 
   useEffect(() => {
+    // If unauthorized, start countdown to redirect
     if (unauthorized && count > 0) {
       const interval = setInterval(() => {
         setCount((prev) => prev - 1);
       }, 1000);
 
+      // Clear the interval when count reaches 0
       return () => clearInterval(interval);
     }
   }, [unauthorized, count]);
 
   async function fetchListing() {
+    // Fetch the listing details from Supabase
     const { data, error } = await supabase
       .from("listing")
       .select()
@@ -127,10 +130,10 @@ export default function EditListing() {
       ) : (
         <div className="px-5 md:px-10 py-10 max-w-3xl mx-auto">
           <div className="">
-            <h2 className="font-bold text-2xl font-text mb-5">
+            <h2 className="font-bold text-3xl text-brand font-text mb-5">
               Edit Listing Details
             </h2>
-            <hr className="mb-5" />
+            <hr className="mb-10" />
             <div className="flex justify-between items-center mb-5">
               <div>
                 <h2 className="font-semibold text-lg font-text mb-5">
@@ -155,10 +158,10 @@ export default function EditListing() {
                   Property Type
                 </h2>
                 <Select>
-                  <SelectTrigger className="w-[180px] hover:cursor-pointer">
-                    <SelectValue placeholder="Property Type" />
+                  <SelectTrigger className="w-[200px] hover:cursor-pointer">
+                    <SelectValue placeholder="Select Property Type" />
                   </SelectTrigger>
-                  <SelectContent className="bg-white">
+                  <SelectContent className="bg-white hover:cursor-pointer">
                     <SelectItem value="Single Family House">
                       Single Family House
                     </SelectItem>

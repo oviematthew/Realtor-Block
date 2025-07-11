@@ -34,12 +34,6 @@ export default function AddNewListing() {
 
     setLoading(true);
 
-    console.log("Attempting to insert:", {
-      createdBy: user?.primaryEmailAddress?.emailAddress,
-      address: selectedAddress,
-      coordinates,
-    });
-
     // Insert the new listing into the database
     // Ensure supabase client is initialized correctly
     const { data, error } = await supabase
