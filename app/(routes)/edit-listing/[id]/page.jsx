@@ -7,6 +7,7 @@ import { supabase } from "../../../../utils/supabase/client";
 import { toast } from "sonner";
 import { Loader } from "lucide-react";
 import { Label } from "../../../../@/components/ui/label";
+import { Input } from "../../../../@/components/ui/input";
 import {
   RadioGroup,
   RadioGroupItem,
@@ -180,6 +181,47 @@ export default function EditListing() {
               value={listing?.address || ""}
               className="w-full border rounded-md p-2 bg-gray-100"
             />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
+            <div className="flex gap-2 flex-col">
+              <h2 className="text-gray-500">Bedroom(s)</h2>
+              <Input type="number" placeholder="2" name="bedroom" />
+            </div>
+            <div className="flex gap-2 flex-col">
+              <h2 className="text-gray-500">Bathroom(s)</h2>
+              <Input type="number" placeholder="2" name="bathroom" />
+            </div>
+            <div className="flex gap-2 flex-col">
+              <h2 className="text-gray-500">Built In</h2>
+              <Input type="number" placeholder="2025" name="builtIn" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
+            <div className="flex gap-2 flex-col">
+              <h2 className="text-gray-500">Parking</h2>
+              <Input type="number" placeholder="2" name="parking" />
+            </div>
+            <div className="flex gap-2 flex-col">
+              <h2 className="text-gray-500">Lot Size (Sq.ft)</h2>
+              <Input type="number" placeholder="3000" name="lotSize" />
+            </div>
+            <div className="flex gap-2 flex-col">
+              <h2 className="text-gray-500">Area</h2>
+              <Input type="number" placeholder="1900" name="area" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
+            <div className="flex gap-2 flex-col">
+              <h2 className="text-gray-500">Selling Price ($)</h2>
+              <Input type="number" placeholder="400000" name="price" />
+            </div>
+            <div className="flex gap-2 flex-col">
+              <h2 className="text-gray-500">HOA (Per Month) ($)</h2>
+              <Input type="number" placeholder="3000" name="hoa" />
+            </div>
           </div>
         </div>
       )}
