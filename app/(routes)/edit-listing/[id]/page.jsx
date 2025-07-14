@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Loader } from "lucide-react";
 import { Label } from "../../../../@/components/ui/label";
 import { Input } from "../../../../@/components/ui/input";
+import { Textarea } from "../../../../@/components/ui/textarea";
 import {
   RadioGroup,
   RadioGroupItem,
@@ -175,7 +176,7 @@ export default function EditListing() {
           </div>
 
           <div className="mb-5 space-y-1">
-            <label className="block font-semibold text-sm">Address</label>
+            <label className=" text-gray-500">Address</label>
             <input
               disabled
               value={listing?.address || ""}
@@ -222,6 +223,15 @@ export default function EditListing() {
               <h2 className="text-gray-500">HOA (Per Month) ($)</h2>
               <Input type="number" placeholder="3000" name="hoa" />
             </div>
+          </div>
+          <div className="grid grid-cols-1">
+            <h2 className="text-gray-500 mb-2">Description</h2>
+            <Textarea
+              name="description"
+              rows="4"
+              placeholder="Write a brief description of the property..."
+              className="w-full border rounded-md p-2 "
+            ></Textarea>
           </div>
         </div>
       )}
