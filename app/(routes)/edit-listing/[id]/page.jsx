@@ -9,6 +9,7 @@ import { Loader } from "lucide-react";
 import { Label } from "../../../../@/components/ui/label";
 import { Input } from "../../../../@/components/ui/input";
 import { Textarea } from "../../../../@/components/ui/textarea";
+import { Button } from "../../../../@/components/ui/button";
 import {
   RadioGroup,
   RadioGroupItem,
@@ -20,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../../@/components/ui/select";
+import { Formik } from "formik";
 
 export default function EditListing() {
   const { user, isLoaded } = useUser();
@@ -28,6 +30,7 @@ export default function EditListing() {
   const [unauthorized, setUnauthorized] = useState(false);
   const [count, setCount] = useState(5);
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [listing, setListing] = useState(null);
 
   useEffect(() => {
@@ -53,8 +56,8 @@ export default function EditListing() {
     }
   }, [unauthorized, count]);
 
+  // Fetch the listing details from Supabase
   async function fetchListing() {
-    // Fetch the listing details from Supabase
     const { data, error } = await supabase
       .from("listing")
       .select()
@@ -76,11 +79,13 @@ export default function EditListing() {
       return;
     }
 
+    // If the listing is active, redirect to view page
     if (data.active) {
       router.push(`/view-listing/${id}`);
       return;
     }
 
+    // Set the listing data to state
     setListing(data);
     setLoading(false);
   }
@@ -136,102 +141,193 @@ export default function EditListing() {
               Edit Listing Details
             </h2>
             <hr className="mb-10" />
-            <div className="flex justify-between items-center mb-5">
-              <div>
-                <h2 className="font-semibold text-lg font-text mb-5">
-                  Rent Or Sell
-                </h2>
-                <RadioGroup defaultValue="rent">
-                  <div className="flex gap-5 mb-5">
-                    <div className="flex items-center gap-3">
-                      <RadioGroupItem value="rent" id="rent" />
-                      <Label htmlFor="rent">Rent</Label>
+            <Formik
+              initialValues={{
+                bedroom: listing?.bedroom || "",
+                bathroom: listing?.bathroom || "",
+                builtIn: listing?.builtIn || "",
+                parking: listing?.parking || "",
+                lotSize: listing?.lotSize || "",
+                area: listing?.area || "",
+                price: listing?.price || "",
+                hoa: listing?.hoa || "",
+                description: listing?.description || "",
+                type: listing?.type || "rent",
+                propertyType: listing?.propertyType || "",
+              }}
+              enableReinitialize
+            >
+              {({ values, handleChange, handleSubmit }) => (
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="form">
+                    <div className="flex justify-between items-center mb-5">
+                      <div>
+                        <h2 className="font-semibold text-lg font-text mb-5">
+                          Rent Or Sell
+                        </h2>
+                        <RadioGroup
+                          value={values.type}
+                          onValueChange={(val) => setFieldValue("type", val)}
+                        >
+                          <div className="flex gap-5 mb-5">
+                            <div className="flex items-center gap-3">
+                              <RadioGroupItem value="rent" id="rent" />
+                              <Label htmlFor="rent">Rent</Label>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <RadioGroupItem value="sell" id="sell" />
+                              <Label htmlFor="sell">Sell</Label>
+                            </div>
+                          </div>
+                        </RadioGroup>
+                      </div>
+
+                      <div className="flex flex-col">
+                        <h2 className="font-semibold text-lg font-text mb-5">
+                          Property Type
+                        </h2>
+                        <Select
+                          value={values.propertyType}
+                          onValueChange={(val) =>
+                            setFieldValue("propertyType", val)
+                          }
+                        >
+                          <SelectTrigger className="w-[200px] hover:cursor-pointer">
+                            <SelectValue placeholder="Select Property Type" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-white hover:cursor-pointer">
+                            <SelectItem value="Single Family House">
+                              Single Family House
+                            </SelectItem>
+                            <SelectItem value="Town House">
+                              Town House
+                            </SelectItem>
+                            <SelectItem value="Condo">Condo</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <RadioGroupItem value="sell" id="sell" />
-                      <Label htmlFor="sell">Sell</Label>
+
+                    {/* Rest of form inputs */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
+                      <div className="flex gap-2 flex-col">
+                        <h2 className="text-gray-500">Bedroom(s)</h2>
+                        <Input
+                          type="number"
+                          name="bedroom"
+                          value={values.bedroom}
+                          onChange={handleChange}
+                          placeholder="2"
+                        />
+                      </div>
+                      <div className="flex gap-2 flex-col">
+                        <h2 className="text-gray-500">Bathroom(s)</h2>
+                        <Input
+                          type="number"
+                          name="bathroom"
+                          value={values.bathroom}
+                          onChange={handleChange}
+                          placeholder="2"
+                        />
+                      </div>
+                      <div className="flex gap-2 flex-col">
+                        <h2 className="text-gray-500">Built In</h2>
+                        <Input
+                          type="number"
+                          name="builtIn"
+                          value={values.builtIn}
+                          onChange={handleChange}
+                          placeholder="2025"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
+                      <div className="flex gap-2 flex-col">
+                        <h2 className="text-gray-500">Parking</h2>
+                        <Input
+                          type="number"
+                          name="parking"
+                          value={values.parking}
+                          onChange={handleChange}
+                          placeholder="2"
+                        />
+                      </div>
+                      <div className="flex gap-2 flex-col">
+                        <h2 className="text-gray-500">Lot Size (Sq.ft)</h2>
+                        <Input
+                          type="number"
+                          name="lotSize"
+                          value={values.lotSize}
+                          onChange={handleChange}
+                          placeholder="3000"
+                        />
+                      </div>
+                      <div className="flex gap-2 flex-col">
+                        <h2 className="text-gray-500">Area</h2>
+                        <Input
+                          type="number"
+                          name="area"
+                          value={values.area}
+                          onChange={handleChange}
+                          placeholder="1900"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
+                      <div className="flex gap-2 flex-col">
+                        <h2 className="text-gray-500">Selling Price ($)</h2>
+                        <Input
+                          type="number"
+                          name="price"
+                          value={values.price}
+                          onChange={handleChange}
+                          placeholder="400000"
+                        />
+                      </div>
+                      <div className="flex gap-2 flex-col">
+                        <h2 className="text-gray-500">HOA (Per Month) ($)</h2>
+                        <Input
+                          type="number"
+                          name="hoa"
+                          value={values.hoa}
+                          onChange={handleChange}
+                          placeholder="3000"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1">
+                      <h2 className="text-gray-500 mb-2">Description</h2>
+                      <Textarea
+                        name="description"
+                        value={values.description}
+                        onChange={handleChange}
+                        rows={6}
+                        placeholder="Write a brief description of the property..."
+                        className="w-full border rounded-md p-2 "
+                      />
+                    </div>
+                    <div className="buttons flex mt-5 gap-5">
+                      <Button variant="outline" className="">
+                        Save
+                      </Button>
+                      <Button
+                        className="bg-brand hover:bg-brand-dark hover:cursor-pointer font-text text-white"
+                        type="submit"
+                      >
+                        {submitting ? (
+                          <Loader className="w-4 h-4 animate-spin" />
+                        ) : (
+                          "Save & Publish"
+                        )}
+                      </Button>
                     </div>
                   </div>
-                </RadioGroup>
-              </div>
-
-              <div className="flex flex-col">
-                <h2 className="font-semibold text-lg font-text mb-5">
-                  Property Type
-                </h2>
-                <Select>
-                  <SelectTrigger className="w-[200px] hover:cursor-pointer">
-                    <SelectValue placeholder="Select Property Type" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white hover:cursor-pointer">
-                    <SelectItem value="Single Family House">
-                      Single Family House
-                    </SelectItem>
-                    <SelectItem value="Town House">Town House</SelectItem>
-                    <SelectItem value="Condo">Condo</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </div>
-
-          <div className="mb-5 space-y-1">
-            <label className=" text-gray-500">Address</label>
-            <input
-              disabled
-              value={listing?.address || ""}
-              className="w-full border rounded-md p-2 bg-gray-100"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
-            <div className="flex gap-2 flex-col">
-              <h2 className="text-gray-500">Bedroom(s)</h2>
-              <Input type="number" placeholder="2" name="bedroom" />
-            </div>
-            <div className="flex gap-2 flex-col">
-              <h2 className="text-gray-500">Bathroom(s)</h2>
-              <Input type="number" placeholder="2" name="bathroom" />
-            </div>
-            <div className="flex gap-2 flex-col">
-              <h2 className="text-gray-500">Built In</h2>
-              <Input type="number" placeholder="2025" name="builtIn" />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
-            <div className="flex gap-2 flex-col">
-              <h2 className="text-gray-500">Parking</h2>
-              <Input type="number" placeholder="2" name="parking" />
-            </div>
-            <div className="flex gap-2 flex-col">
-              <h2 className="text-gray-500">Lot Size (Sq.ft)</h2>
-              <Input type="number" placeholder="3000" name="lotSize" />
-            </div>
-            <div className="flex gap-2 flex-col">
-              <h2 className="text-gray-500">Area</h2>
-              <Input type="number" placeholder="1900" name="area" />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
-            <div className="flex gap-2 flex-col">
-              <h2 className="text-gray-500">Selling Price ($)</h2>
-              <Input type="number" placeholder="400000" name="price" />
-            </div>
-            <div className="flex gap-2 flex-col">
-              <h2 className="text-gray-500">HOA (Per Month) ($)</h2>
-              <Input type="number" placeholder="3000" name="hoa" />
-            </div>
-          </div>
-          <div className="grid grid-cols-1">
-            <h2 className="text-gray-500 mb-2">Description</h2>
-            <Textarea
-              name="description"
-              rows="4"
-              placeholder="Write a brief description of the property..."
-              className="w-full border rounded-md p-2 "
-            ></Textarea>
+                </form>
+              )}
+            </Formik>
           </div>
         </div>
       )}
