@@ -156,6 +156,10 @@ export default function EditListing() {
                 propertyType: listing?.propertyType || "",
               }}
               enableReinitialize
+              onSubmit={(values) => {
+                console.log("Form submitted with values:", values);
+                setSubmitting(true);
+              }}
             >
               {({ values, handleChange, handleSubmit }) => (
                 <form onSubmit={handleSubmit} className="space-y-5">
@@ -166,8 +170,7 @@ export default function EditListing() {
                           Rent Or Sell
                         </h2>
                         <RadioGroup
-                          value={values.type}
-                          onValueChange={(val) => setFieldValue("type", val)}
+                          onValueChange={(val) => (values.type = val)}
                         >
                           <div className="flex gap-5 mb-5">
                             <div className="flex items-center gap-3">
@@ -187,10 +190,7 @@ export default function EditListing() {
                           Property Type
                         </h2>
                         <Select
-                          value={values.propertyType}
-                          onValueChange={(val) =>
-                            setFieldValue("propertyType", val)
-                          }
+                          onValueChange={(val) => (values.propertyType = val)}
                         >
                           <SelectTrigger className="w-[200px] hover:cursor-pointer">
                             <SelectValue placeholder="Select Property Type" />
@@ -215,7 +215,6 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="bedroom"
-                          value={values.bedroom}
                           onChange={handleChange}
                           placeholder="2"
                         />
@@ -225,7 +224,6 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="bathroom"
-                          value={values.bathroom}
                           onChange={handleChange}
                           placeholder="2"
                         />
@@ -235,7 +233,6 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="builtIn"
-                          value={values.builtIn}
                           onChange={handleChange}
                           placeholder="2025"
                         />
@@ -248,7 +245,6 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="parking"
-                          value={values.parking}
                           onChange={handleChange}
                           placeholder="2"
                         />
@@ -258,7 +254,6 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="lotSize"
-                          value={values.lotSize}
                           onChange={handleChange}
                           placeholder="3000"
                         />
@@ -268,7 +263,6 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="area"
-                          value={values.area}
                           onChange={handleChange}
                           placeholder="1900"
                         />
@@ -281,7 +275,6 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="price"
-                          value={values.price}
                           onChange={handleChange}
                           placeholder="400000"
                         />
@@ -291,7 +284,6 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="hoa"
-                          value={values.hoa}
                           onChange={handleChange}
                           placeholder="3000"
                         />
@@ -302,7 +294,6 @@ export default function EditListing() {
                       <h2 className="text-gray-500 mb-2">Description</h2>
                       <Textarea
                         name="description"
-                        value={values.description}
                         onChange={handleChange}
                         rows={6}
                         placeholder="Write a brief description of the property..."
