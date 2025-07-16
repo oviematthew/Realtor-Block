@@ -310,7 +310,10 @@ export default function EditListing() {
                       />
                     </div>
                     <div className="buttons flex mt-5 gap-5">
-                      <Button variant="outline" className="">
+                      <Button
+                        variant="outline"
+                        className="hover:cursor-pointer"
+                      >
                         Save
                       </Button>
                       <Button
