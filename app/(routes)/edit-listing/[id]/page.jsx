@@ -217,6 +217,7 @@ export default function EditListing() {
                           name="bedroom"
                           onChange={handleChange}
                           placeholder="2"
+                          min="0"
                         />
                       </div>
                       <div className="flex gap-2 flex-col">
@@ -226,6 +227,7 @@ export default function EditListing() {
                           name="bathroom"
                           onChange={handleChange}
                           placeholder="2"
+                          min="0"
                         />
                       </div>
                       <div className="flex gap-2 flex-col">
@@ -235,6 +237,7 @@ export default function EditListing() {
                           name="builtIn"
                           onChange={handleChange}
                           placeholder="2025"
+                          min="1900"
                         />
                       </div>
                     </div>
@@ -247,6 +250,7 @@ export default function EditListing() {
                           name="parking"
                           onChange={handleChange}
                           placeholder="2"
+                          min="0"
                         />
                       </div>
                       <div className="flex gap-2 flex-col">
@@ -277,6 +281,7 @@ export default function EditListing() {
                           name="price"
                           onChange={handleChange}
                           placeholder="400000"
+                          min="0"
                         />
                       </div>
                       <div className="flex gap-2 flex-col">
@@ -286,6 +291,7 @@ export default function EditListing() {
                           name="hoa"
                           onChange={handleChange}
                           placeholder="3000"
+                          min="0"
                         />
                       </div>
                     </div>
