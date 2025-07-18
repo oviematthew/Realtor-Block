@@ -90,28 +90,22 @@ export default function EditListing() {
     setLoading(false);
   }
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  async function handleUpdate(e) {
-    e.preventDefault();
-    setLoading(true);
-
+  // Handle form submission to update the listing in supabase
+  async function onSubmitHandler(valueData) {
+    setSubmitting(true);
     const { error } = await supabase
       .from("listing")
-      .update(formData)
+      .update(valueData)
       .eq("id", id);
 
     if (error) {
       toast.error("Failed to update listing.");
     } else {
-      toast.success("Listing updated.");
-      router.push(`/view-listing/${id}`);
+      toast.success("Listing updated successfully.");
+      console.log("Listing updated:", values);
+      setSubmitting(false);
+      // router.push(`/view-listing/${id}`);
     }
-
-    setLoading(false);
   }
 
   if (loading) {
@@ -157,8 +151,7 @@ export default function EditListing() {
               }}
               enableReinitialize
               onSubmit={(values) => {
-                console.log("Form submitted with values:", values);
-                setSubmitting(true);
+                onSubmitHandler(values);
               }}
             >
               {({ values, handleChange, handleSubmit }) => (
@@ -207,6 +200,16 @@ export default function EditListing() {
                         </Select>
                       </div>
                     </div>
+                    <div className="flex flex-col mb-5">
+                      <h2 className="text-gray-500 mb-2">Address</h2>
+                      <Input
+                        type="text"
+                        name="address"
+                        value={listing?.address || ""}
+                        readOnly
+                        className="w-full border rounded-md p-2 bg-gray-100"
+                      />
+                    </div>
 
                     {/* Rest of form inputs */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
@@ -216,6 +219,7 @@ export default function EditListing() {
                           type="number"
                           name="bedroom"
                           onChange={handleChange}
+                          value={listing?.bedroom || ""}
                           placeholder="2"
                           min="0"
                         />
@@ -226,6 +230,7 @@ export default function EditListing() {
                           type="number"
                           name="bathroom"
                           onChange={handleChange}
+                          value={listing?.bathroom || ""}
                           placeholder="2"
                           min="0"
                         />
@@ -235,6 +240,7 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="builtIn"
+                          value={listing?.builtIn || ""}
                           onChange={handleChange}
                           placeholder="2025"
                           min="1900"
@@ -248,6 +254,7 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="parking"
+                          value={listing?.parking || ""}
                           onChange={handleChange}
                           placeholder="2"
                           min="0"
@@ -258,6 +265,7 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="lotSize"
+                          value={listing?.lotSize || ""}
                           onChange={handleChange}
                           placeholder="3000"
                         />
@@ -267,6 +275,7 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="area"
+                          value={listing?.area || ""}
                           onChange={handleChange}
                           placeholder="1900"
                         />
@@ -279,6 +288,7 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="price"
+                          value={listing?.price || ""}
                           onChange={handleChange}
                           placeholder="400000"
                           min="0"
@@ -289,6 +299,7 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="hoa"
+                          value={listing?.hoa || ""}
                           onChange={handleChange}
                           placeholder="3000"
                           min="0"
@@ -302,6 +313,7 @@ export default function EditListing() {
                         name="description"
                         onChange={handleChange}
                         rows={6}
+                        value={listing?.description || ""}
                         placeholder="Write a brief description of the property..."
                         className="w-full border rounded-md p-2 "
                       />
