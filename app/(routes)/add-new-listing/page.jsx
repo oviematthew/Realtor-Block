@@ -22,7 +22,7 @@ export default function AddNewListing() {
 
   useEffect(() => {
     if (isLoaded && !user) {
-      router.push("/sign-in");
+      router.replace("/sign-in");
     }
   }, [isLoaded, user, router]);
 
@@ -56,7 +56,7 @@ export default function AddNewListing() {
       setLoading(false);
 
       // ✅ Redirect to the edit page
-      router.push(`/edit-listing/${listingId}`);
+      router.replace(`/edit-listing/${listingId}`);
     }
 
     if (error) {

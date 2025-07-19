@@ -93,18 +93,24 @@ export default function EditListing() {
   // Handle form submission to update the listing in supabase
   async function onSubmitHandler(valueData) {
     setSubmitting(true);
-    const { error } = await supabase
-      .from("listing")
-      .update(valueData)
-      .eq("id", id);
 
-    if (error) {
-      toast.error("Failed to update listing.");
-    } else {
-      toast.success("Listing updated successfully.");
-      console.log("Listing updated:", values);
+    try {
+      const { error } = await supabase
+        .from("listing")
+        .update(valueData)
+        .eq("id", id);
+
+      if (error) {
+        toast.error("Failed to update listing.");
+      } else {
+        toast.success("Listing updated successfully.");
+        console.log("Listing updated:", valueData);
+      }
+    } catch (err) {
+      toast.error("Something went wrong.");
+      console.error(err);
+    } finally {
       setSubmitting(false);
-      // router.push(`/view-listing/${id}`);
     }
   }
 
@@ -154,7 +160,7 @@ export default function EditListing() {
                 onSubmitHandler(values);
               }}
             >
-              {({ values, handleChange, handleSubmit }) => (
+              {({ values, handleChange, handleSubmit, setFieldValue }) => (
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="form">
                     <div className="flex justify-between items-center mb-5">
@@ -163,7 +169,8 @@ export default function EditListing() {
                           Rent Or Sell
                         </h2>
                         <RadioGroup
-                          onValueChange={(val) => (values.type = val)}
+                          value={values.type}
+                          onValueChange={(val) => setFieldValue("type", val)}
                         >
                           <div className="flex gap-5 mb-5">
                             <div className="flex items-center gap-3">
@@ -183,7 +190,10 @@ export default function EditListing() {
                           Property Type
                         </h2>
                         <Select
-                          onValueChange={(val) => (values.propertyType = val)}
+                          onValueChange={(val) =>
+                            setFieldValue("propertyType", val)
+                          }
+                          value={values?.propertyType || ""}
                         >
                           <SelectTrigger className="w-[200px] hover:cursor-pointer">
                             <SelectValue placeholder="Select Property Type" />
@@ -219,7 +229,7 @@ export default function EditListing() {
                           type="number"
                           name="bedroom"
                           onChange={handleChange}
-                          value={listing?.bedroom || ""}
+                          value={values?.bedroom || ""}
                           placeholder="2"
                           min="0"
                         />
@@ -230,7 +240,7 @@ export default function EditListing() {
                           type="number"
                           name="bathroom"
                           onChange={handleChange}
-                          value={listing?.bathroom || ""}
+                          value={values?.bathroom || ""}
                           placeholder="2"
                           min="0"
                         />
@@ -240,7 +250,7 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="builtIn"
-                          value={listing?.builtIn || ""}
+                          value={values?.builtIn || ""}
                           onChange={handleChange}
                           placeholder="2025"
                           min="1900"
@@ -254,7 +264,7 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="parking"
-                          value={listing?.parking || ""}
+                          value={values?.parking || ""}
                           onChange={handleChange}
                           placeholder="2"
                           min="0"
@@ -265,7 +275,7 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="lotSize"
-                          value={listing?.lotSize || ""}
+                          value={values?.lotSize || ""}
                           onChange={handleChange}
                           placeholder="3000"
                         />
@@ -275,7 +285,7 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="area"
-                          value={listing?.area || ""}
+                          value={values?.area || ""}
                           onChange={handleChange}
                           placeholder="1900"
                         />
@@ -288,7 +298,7 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="price"
-                          value={listing?.price || ""}
+                          value={values?.price || ""}
                           onChange={handleChange}
                           placeholder="400000"
                           min="0"
@@ -299,7 +309,7 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="hoa"
-                          value={listing?.hoa || ""}
+                          value={values?.hoa || ""}
                           onChange={handleChange}
                           placeholder="3000"
                           min="0"
@@ -313,7 +323,7 @@ export default function EditListing() {
                         name="description"
                         onChange={handleChange}
                         rows={6}
-                        value={listing?.description || ""}
+                        value={values?.description || ""}
                         placeholder="Write a brief description of the property..."
                         className="w-full border rounded-md p-2 "
                       />
@@ -328,6 +338,7 @@ export default function EditListing() {
                       <Button
                         className="bg-brand hover:bg-brand-dark hover:cursor-pointer font-text text-white"
                         type="submit"
+                        disabled={submitting}
                       >
                         {submitting ? (
                           <Loader className="w-4 h-4 animate-spin" />
