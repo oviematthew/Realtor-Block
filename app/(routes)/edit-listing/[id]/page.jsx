@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "../../../../@/components/ui/select";
 import { Formik } from "formik";
+import FileUpload from "../_components/FileUpload";
 
 export default function EditListing() {
   const { user, isLoaded } = useUser();
@@ -31,7 +32,8 @@ export default function EditListing() {
   const [count, setCount] = useState(5);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [listing, setListing] = useState(null);
+  const [listing, setListing] = useState([]);
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -154,6 +156,8 @@ export default function EditListing() {
                 description: listing?.description || "",
                 type: listing?.type || "rent",
                 propertyType: listing?.propertyType || "",
+                profileImage: user?.imageUrl || "",
+                fullName: user?.createdByUser || "",
               }}
               enableReinitialize
               onSubmit={(values) => {
@@ -169,7 +173,7 @@ export default function EditListing() {
                           Rent Or Sell
                         </h2>
                         <RadioGroup
-                          value={values.type}
+                          defaultValue={values?.type || "rent"}
                           onValueChange={(val) => setFieldValue("type", val)}
                         >
                           <div className="flex gap-5 mb-5">
@@ -193,7 +197,7 @@ export default function EditListing() {
                           onValueChange={(val) =>
                             setFieldValue("propertyType", val)
                           }
-                          value={values?.propertyType || ""}
+                          defaultValue={values?.propertyType || ""}
                         >
                           <SelectTrigger className="w-[200px] hover:cursor-pointer">
                             <SelectValue placeholder="Select Property Type" />
@@ -215,7 +219,7 @@ export default function EditListing() {
                       <Input
                         type="text"
                         name="address"
-                        value={listing?.address || ""}
+                        defaultValue={listing?.address || ""}
                         readOnly
                         className="w-full border rounded-md p-2 bg-gray-100"
                       />
@@ -229,7 +233,7 @@ export default function EditListing() {
                           type="number"
                           name="bedroom"
                           onChange={handleChange}
-                          value={values?.bedroom || ""}
+                          defaultValue={values?.bedroom || ""}
                           placeholder="2"
                           min="0"
                         />
@@ -240,7 +244,7 @@ export default function EditListing() {
                           type="number"
                           name="bathroom"
                           onChange={handleChange}
-                          value={values?.bathroom || ""}
+                          defaultValue={values?.bathroom || ""}
                           placeholder="2"
                           min="0"
                         />
@@ -250,7 +254,7 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="builtIn"
-                          value={values?.builtIn || ""}
+                          defaultValue={values?.builtIn || ""}
                           onChange={handleChange}
                           placeholder="2025"
                           min="1900"
@@ -264,7 +268,7 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="parking"
-                          value={values?.parking || ""}
+                          defaultValue={values?.parking || ""}
                           onChange={handleChange}
                           placeholder="2"
                           min="0"
@@ -275,7 +279,7 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="lotSize"
-                          value={values?.lotSize || ""}
+                          defaultValue={values?.lotSize || ""}
                           onChange={handleChange}
                           placeholder="3000"
                         />
@@ -285,7 +289,7 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="area"
-                          value={values?.area || ""}
+                          defaultValue={values?.area || ""}
                           onChange={handleChange}
                           placeholder="1900"
                         />
@@ -298,7 +302,7 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="price"
-                          value={values?.price || ""}
+                          defaultValue={values?.price || ""}
                           onChange={handleChange}
                           placeholder="400000"
                           min="0"
@@ -323,12 +327,21 @@ export default function EditListing() {
                         name="description"
                         onChange={handleChange}
                         rows={6}
-                        value={values?.description || ""}
+                        defaultValue={values?.description || ""}
                         placeholder="Write a brief description of the property..."
                         className="w-full border rounded-md p-2 "
                       />
                     </div>
-                    <div className="buttons flex mt-5 gap-5">
+
+                    {/* Profile Images */}
+                    <div>
+                      <h2 className="font-lg text-gray-500 mt-3">
+                        Upload Property Images
+                      </h2>
+                      <FileUpload setImages={(value) => setImages(value)} />
+                    </div>
+
+                    <div className="buttons flex justify-end mt-5 gap-5">
                       <Button
                         variant="outline"
                         className="hover:cursor-pointer"
