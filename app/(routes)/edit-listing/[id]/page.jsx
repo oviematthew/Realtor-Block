@@ -94,19 +94,50 @@ export default function EditListing() {
 
   // Handle form submission to update the listing in supabase
   async function onSubmitHandler(valueData) {
+    console.log("Submitting data:", valueData);
     setSubmitting(true);
 
     try {
       const { error } = await supabase
         .from("listing")
         .update(valueData)
-        .eq("id", id);
+        .eq("id", id)
+        .select();
 
       if (error) {
         toast.error("Failed to update listing.");
       } else {
         toast.success("Listing updated successfully.");
-        console.log("Listing updated:", valueData);
+      }
+
+      // If images were uploaded, handle the upload
+      for (const image of images) {
+        const file = image;
+        const fileName = `${Date.now()}-${file.name}`;
+        const fileExtension = file.name.split(".").pop();
+
+        const { data, error: uploadError } = await supabase.storage
+          .from("listingimages")
+          .upload(`${fileName}`, file, {
+            upsert: false,
+            contentType: `image/${fileExtension}`,
+          });
+
+        // If the upload was successful, update the listing with the image URL
+        if (uploadError) {
+          toast.error(`Failed to upload image: ${image.name}`);
+        } else {
+          toast.success(`Images uploaded`);
+          const imageUrl = `${process.env.NEXT_PUBLIC_IMAGE_URL}${fileName}`;
+
+          const { data } = await supabase
+            .from("listingImages")
+            .insert({
+              listing_Id: id,
+              url: imageUrl,
+            })
+            .select();
+        }
       }
     } catch (err) {
       toast.error("Something went wrong.");
@@ -173,7 +204,7 @@ export default function EditListing() {
                           Rent Or Sell
                         </h2>
                         <RadioGroup
-                          defaultValue={values?.type || "rent"}
+                          value={values?.type || "rent"}
                           onValueChange={(val) => setFieldValue("type", val)}
                         >
                           <div className="flex gap-5 mb-5">
@@ -197,7 +228,7 @@ export default function EditListing() {
                           onValueChange={(val) =>
                             setFieldValue("propertyType", val)
                           }
-                          defaultValue={values?.propertyType || ""}
+                          value={values?.propertyType || ""}
                         >
                           <SelectTrigger className="w-[200px] hover:cursor-pointer">
                             <SelectValue placeholder="Select Property Type" />
@@ -219,7 +250,7 @@ export default function EditListing() {
                       <Input
                         type="text"
                         name="address"
-                        defaultValue={listing?.address || ""}
+                        value={listing?.address || ""}
                         readOnly
                         className="w-full border rounded-md p-2 bg-gray-100"
                       />
@@ -233,7 +264,7 @@ export default function EditListing() {
                           type="number"
                           name="bedroom"
                           onChange={handleChange}
-                          defaultValue={values?.bedroom || ""}
+                          value={values?.bedroom || ""}
                           placeholder="2"
                           min="0"
                         />
@@ -244,7 +275,7 @@ export default function EditListing() {
                           type="number"
                           name="bathroom"
                           onChange={handleChange}
-                          defaultValue={values?.bathroom || ""}
+                          value={values?.bathroom || ""}
                           placeholder="2"
                           min="0"
                         />
@@ -254,7 +285,7 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="builtIn"
-                          defaultValue={values?.builtIn || ""}
+                          value={values?.builtIn || ""}
                           onChange={handleChange}
                           placeholder="2025"
                           min="1900"
@@ -268,7 +299,7 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="parking"
-                          defaultValue={values?.parking || ""}
+                          value={values?.parking || ""}
                           onChange={handleChange}
                           placeholder="2"
                           min="0"
@@ -279,7 +310,7 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="lotSize"
-                          defaultValue={values?.lotSize || ""}
+                          value={values?.lotSize || ""}
                           onChange={handleChange}
                           placeholder="3000"
                         />
@@ -289,7 +320,7 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="area"
-                          defaultValue={values?.area || ""}
+                          value={values?.area || ""}
                           onChange={handleChange}
                           placeholder="1900"
                         />
@@ -302,7 +333,7 @@ export default function EditListing() {
                         <Input
                           type="number"
                           name="price"
-                          defaultValue={values?.price || ""}
+                          value={values?.price || ""}
                           onChange={handleChange}
                           placeholder="400000"
                           min="0"
@@ -327,7 +358,7 @@ export default function EditListing() {
                         name="description"
                         onChange={handleChange}
                         rows={6}
-                        defaultValue={values?.description || ""}
+                        value={values?.description || ""}
                         placeholder="Write a brief description of the property..."
                         className="w-full border rounded-md p-2 "
                       />

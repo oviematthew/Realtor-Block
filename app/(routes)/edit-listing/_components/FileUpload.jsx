@@ -7,7 +7,6 @@ export default function FileUpload({ setImages }) {
 
   function handleFileUpload(event) {
     const files = event.target.files;
-    setImages(files);
 
     // Create an array of object URLs for the uploaded files
     const previews = Array.from(files).map((file) => URL.createObjectURL(file));
@@ -15,6 +14,8 @@ export default function FileUpload({ setImages }) {
     // Set the image preview state with the object URLs
     // This will trigger a re-render and display the previews
     setImagePreview(previews);
+
+    setImages(files);
   }
 
   return (
