@@ -68,7 +68,7 @@ export default function EditListing() {
 
     if (error || !data) {
       toast.error("Failed to fetch listing");
-      router.push("/");
+      router.replace("/");
       return;
     }
 
@@ -76,7 +76,7 @@ export default function EditListing() {
       setUnauthorized(true);
       setLoading(false);
       setTimeout(() => {
-        router.push("/");
+        router.replace("/");
       }, 5000);
       return;
     }
@@ -98,16 +98,18 @@ export default function EditListing() {
     setSubmitting(true);
 
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("listing")
         .update(valueData)
         .eq("id", id)
         .select();
 
-      if (error) {
-        toast.error("Failed to update listing.");
-      } else {
+      if (data && data.length > 0) {
         toast.success("Listing updated successfully.");
+      } else {
+        toast.error("Failed to update listing.");
+        console.error("Error updating listing:", error);
+        return;
       }
 
       // If images were uploaded, handle the upload
@@ -188,7 +190,7 @@ export default function EditListing() {
                 type: listing?.type || "rent",
                 propertyType: listing?.propertyType || "",
                 profileImage: user?.imageUrl || "",
-                fullName: user?.createdByUser || "",
+                createdByUser: user?.firstName || "",
               }}
               enableReinitialize
               onSubmit={(values) => {
