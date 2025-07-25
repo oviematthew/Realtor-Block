@@ -94,7 +94,6 @@ export default function EditListing() {
 
   // Handle form submission to update the listing in supabase
   async function onSubmitHandler(valueData) {
-    console.log("Submitting data:", valueData);
     setSubmitting(true);
 
     try {
@@ -104,11 +103,11 @@ export default function EditListing() {
         .eq("id", id)
         .select();
 
+      // Success and error handling
       if (data && data.length > 0) {
         toast.success("Listing updated successfully.");
       } else {
         toast.error("Failed to update listing.");
-        console.error("Error updating listing:", error);
         return;
       }
 
@@ -131,31 +130,32 @@ export default function EditListing() {
           toast.error(`Upload failed: ${uploadError.message}`);
           continue;
         }
+
+        // If upload is successful, show success message
         if (uploadData) {
           toast.success(`Upload Successful `);
         }
 
+        // Get the public URL of the uploaded file from Supabase storage
         const {
           data: { publicUrl },
         } = supabase.storage.from("listingimages").getPublicUrl(fileName);
 
+        // Save the image URL gotten to the database table
         const { error: dbError } = await supabase.from("listingImages").insert({
           listing_id: id,
           url: publicUrl,
         });
 
+        // Succes and error handling to save url to database table
         if (dbError) {
-          toast.error(
-            "Failed to save image URL to database." + dbError.message
-          );
-          console.error("Error saving image URL:", dbError);
+          toast.error("Failed to save image URL to database.");
         } else {
           toast.success("Image uploaded and saved.");
         }
       }
     } catch (err) {
       toast.error("Something went wrong.");
-      console.error(err);
     } finally {
       setSubmitting(false);
     }
