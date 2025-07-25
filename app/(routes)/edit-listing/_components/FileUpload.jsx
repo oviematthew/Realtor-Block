@@ -69,7 +69,7 @@ export default function FileUpload({ setImages }) {
                   width={100}
                   height={100}
                   alt={`Preview ${index + 1}`}
-                  className="w-[100px] h-[100px] object-cover m-2 rounded-md"
+                  className="w-[auto] h-[auto] object-cover m-2 rounded-md"
                 />
               </div>
             ))}

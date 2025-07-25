@@ -113,32 +113,44 @@ export default function EditListing() {
       }
 
       // If images were uploaded, handle the upload
-      for (const image of images) {
-        const file = image;
-        const fileName = `${Date.now()}-${file.name}`;
-        const fileExtension = file.name.split(".").pop();
+      for (const file of images) {
+        if (!file) continue; // Skip if no file is selected
 
-        const { data, error: uploadError } = await supabase.storage
+        // Create a unique file name using timestamp
+        const fileName = `${Date.now()}-${file.name}`;
+
+        // Upload the file to Supabase storage
+        const { data: uploadData, error: uploadError } = await supabase.storage
           .from("listingimages")
-          .upload(`${fileName}`, file, {
+          .upload(fileName, file, {
             upsert: false,
-            contentType: `image/${fileExtension}`,
+            contentType: file.type,
           });
 
-        // If the upload was successful, update the listing with the image URL
         if (uploadError) {
-          toast.error(`Failed to upload image: ${image.name}`);
-        } else {
-          toast.success(`Images uploaded`);
-          const imageUrl = `${process.env.NEXT_PUBLIC_IMAGE_URL}${fileName}`;
+          toast.error(`Upload failed: ${uploadError.message}`);
+          continue;
+        }
+        if (uploadData) {
+          toast.success(`Upload Successful `);
+        }
 
-          const { data } = await supabase
-            .from("listingImages")
-            .insert({
-              listing_Id: id,
-              url: imageUrl,
-            })
-            .select();
+        const {
+          data: { publicUrl },
+        } = supabase.storage.from("listingimages").getPublicUrl(fileName);
+
+        const { error: dbError } = await supabase.from("listingImages").insert({
+          listing_id: id,
+          url: publicUrl,
+        });
+
+        if (dbError) {
+          toast.error(
+            "Failed to save image URL to database." + dbError.message
+          );
+          console.error("Error saving image URL:", dbError);
+        } else {
+          toast.success("Image uploaded and saved.");
         }
       }
     } catch (err) {
