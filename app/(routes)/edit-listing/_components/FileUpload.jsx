@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import Image from "next/image";
 
-export default function FileUpload({ setImages }) {
+export default function FileUpload({ setImages, imageList }) {
   const [imagePreview, setImagePreview] = useState([]);
 
   function handleFileUpload(event) {
@@ -60,6 +60,7 @@ export default function FileUpload({ setImages }) {
         </label>
       </div>
       <div className="preview grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-10 gap-3 mt-4">
+        {/* Image preview before upload */}
         {imagePreview.length > 0 && (
           <>
             {imagePreview.map((image, index) => (
@@ -69,6 +70,23 @@ export default function FileUpload({ setImages }) {
                   width={100}
                   height={100}
                   alt={`Preview ${index + 1}`}
+                  className="w-[auto] h-[auto] object-cover m-2 rounded-md"
+                />
+              </div>
+            ))}
+          </>
+        )}
+
+        {/* Display already uploaded images from the database */}
+        {imageList.length > 0 && (
+          <>
+            {imageList.map((image, index) => (
+              <div key={index}>
+                <Image
+                  src={image.url}
+                  width={100}
+                  height={100}
+                  alt={`Uploaded ${index + 1}`}
                   className="w-[auto] h-[auto] object-cover m-2 rounded-md"
                 />
               </div>

@@ -62,7 +62,7 @@ export default function EditListing() {
   async function fetchListing() {
     const { data, error } = await supabase
       .from("listing")
-      .select()
+      .select("*, listingImages(listing_id, url)")
       .eq("id", id)
       .single();
 
@@ -383,7 +383,10 @@ export default function EditListing() {
                       <h2 className="font-lg text-gray-500 mt-3">
                         Upload Property Images
                       </h2>
-                      <FileUpload setImages={(value) => setImages(value)} />
+                      <FileUpload
+                        setImages={(value) => setImages(value)}
+                        imageList={listing?.listingImages || []}
+                      />
                     </div>
 
                     <div className="buttons flex justify-end mt-5 gap-5">
