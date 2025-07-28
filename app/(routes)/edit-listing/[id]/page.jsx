@@ -23,6 +23,17 @@ import {
 } from "../../../../@/components/ui/select";
 import { Formik } from "formik";
 import FileUpload from "../_components/FileUpload";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../../../../@/components/ui/alert-dialog";
 
 export default function EditListing() {
   const { user, isLoaded } = useUser();
@@ -81,11 +92,6 @@ export default function EditListing() {
       return;
     }
 
-    // If the listing is active, redirect to view page
-    if (data.active) {
-      router.push(`/view-listing/${id}`);
-      return;
-    }
 
     // Set the listing data to state
     setListing(data);
@@ -159,6 +165,31 @@ export default function EditListing() {
     } finally {
       setSubmitting(false);
     }
+  }
+
+  async function onPublishHandler() {
+    setSubmitting(true);
+
+    if (submitting) {
+      toast.error("Please wait, your listing is being published.");
+      return;
+    }
+
+    // Update the listing to set it as active
+    const { error } = await supabase
+      .from("listing")
+      .update({ active: true })
+      .eq("id", id);
+
+    if (error) {
+      toast.error("Failed to publish listing.");
+      setSubmitting(false);
+      return;
+    }
+
+    toast.success("Listing published successfully.");
+    setSubmitting(false);
+    router.push(`/view-listing/${id}`);
   }
 
   if (loading) {
@@ -393,20 +424,48 @@ export default function EditListing() {
                       <Button
                         variant="outline"
                         className="hover:cursor-pointer"
+                        type="submit"
                       >
                         Save
                       </Button>
-                      <Button
-                        className="bg-brand hover:bg-brand-dark hover:cursor-pointer font-text text-white"
-                        type="submit"
-                        disabled={submitting}
-                      >
-                        {submitting ? (
-                          <Loader className="w-4 h-4 animate-spin" />
-                        ) : (
-                          "Save & Publish"
-                        )}
-                      </Button>
+
+                      <AlertDialog>
+                        <AlertDialogTrigger>
+                          <Button
+                            className="bg-brand hover:bg-brand-dark hover:cursor-pointer font-text text-white"
+                            type="button"
+                            disabled={submitting}
+                          >
+                            {submitting ? (
+                              <Loader className="w-4 h-4 animate-spin" />
+                            ) : (
+                              "Save & Publish"
+                            )}
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent className="bg-white">
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Do you want to publish this listing? Once
+                              published, it will be visible to the public.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel className="hover:cursor-pointer">
+                              Cancel
+                            </AlertDialogCancel>
+                            <AlertDialogAction
+                              className="bg-brand hover:bg-brand-dark hover:cursor-pointer font-text text-white"
+                              onClick={() => {
+                                onPublishHandler();
+                              }}
+                            >
+                              Continue
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </div>
                   </div>
                 </form>
