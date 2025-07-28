@@ -34,6 +34,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../../../../@/components/ui/alert-dialog";
+import { on } from "events";
 
 export default function EditListing() {
   const { user, isLoaded } = useUser();
@@ -91,7 +92,6 @@ export default function EditListing() {
       }, 5000);
       return;
     }
-
 
     // Set the listing data to state
     setListing(data);
@@ -160,6 +160,7 @@ export default function EditListing() {
           toast.success("Image uploaded and saved.");
         }
       }
+      return true;
     } catch (err) {
       toast.error("Something went wrong.");
     } finally {
@@ -167,29 +168,44 @@ export default function EditListing() {
     }
   }
 
-  async function onPublishHandler() {
+  async function onPublishHandler(formValues) {
     setSubmitting(true);
 
     if (submitting) {
-      toast.error("Please wait, your listing is being published.");
+      toast.message("Please wait, your listing is being published.");
       return;
     }
 
-    // Update the listing to set it as active
-    const { error } = await supabase
-      .from("listing")
-      .update({ active: true })
-      .eq("id", id);
+    // Save the form values first
+    const saveToDb = await onSubmitHandler(formValues);
 
-    if (error) {
-      toast.error("Failed to publish listing.");
+    // Stop here if update failed
+    if (!saveToDb) {
       setSubmitting(false);
       return;
     }
 
-    toast.success("Listing published successfully.");
-    setSubmitting(false);
-    router.push(`/view-listing/${id}`);
+    // check if listing is already active
+    if (listing.active) {
+      setSubmitting(false);
+      router.push(`/view-listing/${id}`);
+    } else {
+      // Update listing to set it as active
+      const { error } = await supabase
+        .from("listing")
+        .update({ active: true })
+        .eq("id", id);
+
+      if (error) {
+        toast.error("Failed to publish listing.");
+        setSubmitting(false);
+        return;
+      }
+
+      toast.success("Listing published successfully.");
+      setSubmitting(false);
+      router.push(`/view-listing/${id}`);
+    }
   }
 
   if (loading) {
@@ -425,8 +441,14 @@ export default function EditListing() {
                         variant="outline"
                         className="hover:cursor-pointer"
                         type="submit"
+                        disabled={submitting}
                       >
-                        Save
+                        {" "}
+                        {submitting ? (
+                          <Loader className="w-4 h-4 animate-spin" />
+                        ) : (
+                          "Save Draft"
+                        )}
                       </Button>
 
                       <AlertDialog>
@@ -458,7 +480,7 @@ export default function EditListing() {
                             <AlertDialogAction
                               className="bg-brand hover:bg-brand-dark hover:cursor-pointer font-text text-white"
                               onClick={() => {
-                                onPublishHandler();
+                                onPublishHandler(values);
                               }}
                             >
                               Continue
