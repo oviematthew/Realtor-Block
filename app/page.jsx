@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { Button } from "../components/ui/button";
 import Link from "next/link";
@@ -6,11 +8,6 @@ import ListingMapView from "./_components/ListingMapView";
 import { supabase } from "../utils/supabase/client";
 
 export default function Home() {
-  async function getListing() {
-    const { data, error } = await supabase
-      .from("listing")
-      .select("*, listingImages(url, listing_id)");
-  }
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5">
       <div className="content">
