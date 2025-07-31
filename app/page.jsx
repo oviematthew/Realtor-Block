@@ -10,7 +10,7 @@ import { supabase } from "../utils/supabase/client";
 export default function Home() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5">
-      <div className="content">
+      <div>
         <Listing type={"rent"} />
       </div>
       <div className="map">
