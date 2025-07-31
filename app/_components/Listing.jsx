@@ -31,27 +31,34 @@ export default function Listing({ type }) {
   return (
     <>
       <div>
-        <div className="listings grid grid-cols-1 md:grid-cols-2 gap-3">
-          {listings.map((listing) => (
-            <div key={listing.id} className="listing-item">
-              <Image
-                src={
-                  listing.listingImages[0]?.url ||
-                  "/media/placeholder-image.svg"
-                }
-                alt={`Apartment For Rent at: ${listing.address}`}
-                width={300}
-                height={200}
-                className="object-cover"
-              />
-              <h2>{listing.address}</h2>
-              <p>{listing.description}</p>
-              <p>Price: ${listing.price}</p>
-              <Link href={`/view-listing/${listing.id}`}>
-                <Button>View Details</Button>
-              </Link>
-            </div>
-          ))}
+        <div className="listings grid grid-cols-1 md:grid-cols-2 gap-5">
+          {listings.length > 0
+            ? listings.map((listing) => (
+                <div key={listing.id} className="listing-item">
+                  <Image
+                    src={
+                      listing.listingImages[0]?.url ||
+                      "/media/placeholder-image.svg"
+                    }
+                    alt={`Apartment For Rent at: ${listing.address}`}
+                    width={300}
+                    height={200}
+                    className="object-cover w-[100%] h-[300px] rounded-lg"
+                  />
+                  <h2>{listing.address}</h2>
+                  <p>{listing.description}</p>
+                  <p>Price: ${listing.price}</p>
+                  <Link href={`/view-listing/${listing.id}`}>
+                    <Button>View Details</Button>
+                  </Link>
+                </div>
+              ))
+            : [1, 2, 3, 4].map((item, index) => (
+                <div
+                  key={index}
+                  className="h-[300px] bg-gray-200 rounded-lg flex items-center justify-center animate-pulse"
+                ></div>
+              ))}
         </div>
       </div>
     </>
