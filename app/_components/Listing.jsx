@@ -40,6 +40,7 @@ export default function Listing({ type }) {
                 <Link
                   className="hover:opacity-90  hover:translate-y-[-2px] transition-all duration-200 ease-in-out"
                   href={`/view-listing/${listing.id}`}
+                  key={listing.id}
                 >
                   <div key={listing.id} className="listing-item">
                     <Image
@@ -53,16 +54,20 @@ export default function Listing({ type }) {
                       className="object-cover w-[100%] h-[250px] rounded-lg rounded-b-none"
                     />
                     {/* Bottom card content */}
-                    <div className="content bg-white rounded-lg rounded-t-none border-2 border-gray-50 p-2">
-                      <div className="bottom-content">
-                        <h3 className="font-bold text-lg text-brand">
-                          ${priceFormat(listing.price)}
-                        </h3>
-                        <p className="text-sm text-gray-400 mb-2">
+                    <div className="content bg-white rounded-lg rounded-t-none border-2 border-gray-50 p-2 pb-3">
+                      <h3 className="font-bold text-lg text-brand">
+                        ${priceFormat(listing.price)}
+                      </h3>
+
+                      <p className="text-sm text-gray-500 mb-2">
+                        {listing.propertyType}
+                      </p>
+
+                      <div className="flex justify-between items-center mb-2">
+                        <p className="text-sm text-gray-400">
                           {getTimeAgo(listing.created_at)}
                         </p>
-
-                        <div className="flex items-center gap-5 mb-2">
+                        <div className="flex items-start gap-3">
                           <p className="text-sm text-gray-500 flex items-center gap-2">
                             {listing.bedroom}{" "}
                             {listing.bedroom > 1 ? "Beds" : "Bed"}
@@ -72,13 +77,11 @@ export default function Listing({ type }) {
                             {listing.bathroom > 1 ? "Baths" : "Bath"}
                           </p>
                         </div>
-                        <p className="text-sm text-gray-500 mb-2">
-                          {listing.propertyType}
-                        </p>
-                        <p className="text-sm text-gray-500">
-                          {listing.address}
-                        </p>
                       </div>
+
+                      <p className="text-sm text-gray-500 mb-2">
+                        {listing.address}
+                      </p>
                     </div>
                   </div>
                 </Link>
