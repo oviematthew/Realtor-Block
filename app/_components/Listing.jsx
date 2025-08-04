@@ -8,9 +8,16 @@ import { toast } from "sonner";
 import { Bath, BedDouble } from "lucide-react";
 import { Button } from "../../@/components/ui/button";
 import getTimeAgo from "../../lib/getTimeAgo";
+import GoogleAddressSearch from "./GoogleAddressSearch";
+import capitalizeText from "../../lib/capitalizeText";
 
 export default function Listing({ type }) {
   const [listings, setListings] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState("");
+  const [coordinates, setCoordinates] = useState({
+    latitude: null,
+    longitude: null,
+  });
 
   useEffect(() => {
     getListing();
@@ -34,6 +41,17 @@ export default function Listing({ type }) {
   return (
     <>
       <div>
+        <div className="search mb-5">
+          <GoogleAddressSearch
+            selectedAddress={(value) => console.log(value)}
+            latitude={(lat) =>
+              setCoordinates((prev) => ({ ...prev, latitude: lat }))
+            }
+            longitude={(lng) =>
+              setCoordinates((prev) => ({ ...prev, longitude: lng }))
+            }
+          />
+        </div>
         <div className="listings grid grid-cols-1 md:grid-cols-2 gap-5">
           {listings.length > 0
             ? listings.map((listing) => (
@@ -55,18 +73,24 @@ export default function Listing({ type }) {
                     />
                     {/* Bottom card content */}
                     <div className="content bg-white rounded-lg rounded-t-none border-2 border-gray-50 p-2 pb-3">
-                      <h3 className="font-bold text-lg text-brand">
-                        ${priceFormat(listing.price)}
-                      </h3>
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-bold text-lg text-brand">
+                          ${priceFormat(listing.price)}
+                        </h3>
+                        <p className="text-sm text-brand">
+                          {capitalizeText(listing.type)}
+                        </p>
+                      </div>
 
                       <p className="text-sm text-gray-500 mb-2">
                         {listing.propertyType}
                       </p>
 
-                      <div className="flex justify-between items-center mb-2">
+                      <div className="flex items-center mb-2">
                         <p className="text-sm text-gray-400">
                           {getTimeAgo(listing.created_at)}
                         </p>
+                        <span className="mx-2 text-gray-400">|</span>
                         <div className="flex items-start gap-3">
                           <p className="text-sm text-gray-500 flex items-center gap-2">
                             {listing.bedroom}{" "}
