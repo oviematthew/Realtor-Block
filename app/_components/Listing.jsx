@@ -54,8 +54,11 @@ export default function Listing({
 
         {searchPerformed && (
           <p className="found text-center mb-4 text-gray-700">
-            Found {listings.length} result{listings.length !== 1 ? "s" : ""} at
-            "{lastSearchedAddress}"
+            Found{" "}
+            <span className="font-bold text-brand">{listings.length}</span>{" "}
+            result
+            {listings.length !== 1 ? "s" : ""} at{" "}
+            <span className="font-bold text-brand">{lastSearchedAddress}</span>
           </p>
         )}
 

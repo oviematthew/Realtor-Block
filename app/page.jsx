@@ -54,7 +54,7 @@ export default function Home() {
       .from("listing")
       .select("*, listingImages(url, listing_id)")
       .eq("active", true)
-      .eq("type", type)
+      // .eq("type", type)
       .order("created_at", { ascending: false });
 
     setLoading(false);
