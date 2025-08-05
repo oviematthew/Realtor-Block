@@ -8,6 +8,7 @@ import { Search } from "lucide-react";
 import { Button } from "../../@/components/ui/button";
 import GoogleAddressSearch from "./GoogleAddressSearch";
 import capitalizeText from "../../lib/capitalizeText";
+import FilterSection from "./FilterSection";
 
 export default function Listing({
   listings,
@@ -50,6 +51,10 @@ export default function Listing({
             <Search className="h-4 w-4" />
             Search
           </Button>
+        </div>
+
+        <div className="filter">
+          <FilterSection />
         </div>
 
         {searchPerformed && (

@@ -262,7 +262,7 @@ export default function EditListing() {
                     <div className="flex justify-between items-center mb-5">
                       <div>
                         <h2 className="font-semibold text-lg font-text mb-5">
-                          Rent Or Sell
+                          Rent Or Sale
                         </h2>
                         <RadioGroup
                           value={values?.type || "rent"}
@@ -274,8 +274,8 @@ export default function EditListing() {
                               <Label htmlFor="rent">Rent</Label>
                             </div>
                             <div className="flex items-center gap-3">
-                              <RadioGroupItem value="sell" id="sell" />
-                              <Label htmlFor="sell">Sell</Label>
+                              <RadioGroupItem value="sale" id="sale" />
+                              <Label htmlFor="sale">Sale</Label>
                             </div>
                           </div>
                         </RadioGroup>
