@@ -8,6 +8,7 @@ export default function GoogleAddressSearch({
   selectedAddress,
   latitude,
   longitude,
+  placeholder,
 }) {
   // ✅ Debounced callback (runs 500ms after place changes)
   const handlePlaceSelected = useCallback(
@@ -35,7 +36,7 @@ export default function GoogleAddressSearch({
           componentRestrictions: { country: "ca" },
         }}
         className="w-full p-2 border border-blue-500 font-text rounded text-center"
-        placeholder="Enter Address you want to list"
+        placeholder={placeholder}
       />
     </div>
   );

@@ -11,8 +11,37 @@ export default function Home() {
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const [inputAddress, setInputAddress] = useState("");
+  const [searchedAddress, setSearchedAddress] = useState("");
+  const [searchPerformed, setSearchPerformed] = useState(false);
+
   const handleSearchClick = async () => {
-    toast.error("Search not implemented yet.");
+    if (!inputAddress) return;
+
+    setSearchPerformed(true);
+    setSearchedAddress(inputAddress);
+
+    setLoading(true);
+
+    const { data, error } = await supabase
+      .from("listing")
+      .select("*, listingImages(url, listing_id)")
+      .eq("active", true)
+      .like("address", "%" + inputAddress + "%")
+      .order("created_at", { ascending: false });
+
+    setLoading(false);
+
+    if (error) {
+      toast.error("Error fetching listings");
+      return;
+    }
+
+    if (data.length === 0) {
+      toast("No listings found with that address");
+    }
+
+    setListings(data);
   };
 
   useEffect(() => {
@@ -28,12 +57,14 @@ export default function Home() {
       .eq("type", type)
       .order("created_at", { ascending: false });
 
-    if (data) {
-      setListings(data);
-    } else if (error) {
-      toast.error("Error fetching listings.");
-    }
     setLoading(false);
+
+    if (error) {
+      toast.error("Error fetching listings.");
+      return;
+    }
+
+    setListings(data);
   }
 
   return (
@@ -43,6 +74,10 @@ export default function Home() {
           listings={listings}
           loading={loading}
           handleSearchCLick={handleSearchClick}
+          searchedAddress={inputAddress}
+          setSearchedAddress={setInputAddress}
+          searchPerformed={searchPerformed}
+          lastSearchedAddress={searchedAddress}
         />
       </div>
       <div className="map">

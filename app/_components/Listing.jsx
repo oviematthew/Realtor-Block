@@ -9,8 +9,15 @@ import { Button } from "../../@/components/ui/button";
 import GoogleAddressSearch from "./GoogleAddressSearch";
 import capitalizeText from "../../lib/capitalizeText";
 
-export default function Listing({ listings, loading, handleSearchCLick }) {
-  const [selectedAddress, setSelectedAddress] = useState("");
+export default function Listing({
+  listings,
+  loading,
+  handleSearchCLick,
+  searchedAddress,
+  setSearchedAddress,
+  searchPerformed,
+  lastSearchedAddress,
+}) {
   const [coordinates, setCoordinates] = useState({
     latitude: null,
     longitude: null,
@@ -21,18 +28,20 @@ export default function Listing({ listings, loading, handleSearchCLick }) {
       <div>
         <div className="search mb-5 p-3 flex items-center gap-4">
           <GoogleAddressSearch
-            selectedAddress={(value) => setSelectedAddress(value)}
+            selectedAddress={(value) => setSearchedAddress(value)}
             latitude={(lat) =>
               setCoordinates((prev) => ({ ...prev, latitude: lat }))
             }
             longitude={(lng) =>
               setCoordinates((prev) => ({ ...prev, longitude: lng }))
             }
+            placeholder={"Enter address you want to search"}
           />
+
           <Button
             className="bg-brand p-5 hover:bg-brand-dark text-white hover:cursor-pointer"
             disabled={
-              !selectedAddress ||
+              !searchedAddress ||
               !coordinates.latitude ||
               !coordinates.longitude
             }
@@ -42,6 +51,13 @@ export default function Listing({ listings, loading, handleSearchCLick }) {
             Search
           </Button>
         </div>
+
+        {searchPerformed && (
+          <p className="found text-center mb-4 text-gray-700">
+            Found {listings.length} result{listings.length !== 1 ? "s" : ""} at
+            "{lastSearchedAddress}"
+          </p>
+        )}
 
         <div className="listings grid grid-cols-1 md:grid-cols-2 gap-5">
           {!loading && listings.length > 0

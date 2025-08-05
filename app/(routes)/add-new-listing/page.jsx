@@ -89,6 +89,7 @@ export default function AddNewListing() {
           longitude={(lng) =>
             setCoordinates((prev) => ({ ...prev, longitude: lng }))
           }
+          placeholder={"Enter Address you want to list"}
         />
 
         <Button
