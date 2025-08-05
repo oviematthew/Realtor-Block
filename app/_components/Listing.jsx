@@ -18,6 +18,10 @@ export default function Listing({
   setSearchedAddress,
   searchPerformed,
   lastSearchedAddress,
+  setBedCount,
+  setBathCount,
+  setParkingCount,
+  setHomeType,
 }) {
   const [coordinates, setCoordinates] = useState({
     latitude: null,
@@ -27,7 +31,7 @@ export default function Listing({
   return (
     <>
       <div>
-        <div className="search mb-5 p-3 flex items-center gap-4">
+        <div className="search p-3 flex items-center gap-4">
           <GoogleAddressSearch
             selectedAddress={(value) => setSearchedAddress(value)}
             latitude={(lat) =>
@@ -54,7 +58,12 @@ export default function Listing({
         </div>
 
         <div className="filter">
-          <FilterSection />
+          <FilterSection
+            setBedCount={setBedCount}
+            setBathCount={setBathCount}
+            setParkingCount={setParkingCount}
+            setHomeType={setHomeType}
+          />
         </div>
 
         {searchPerformed && (
@@ -67,7 +76,7 @@ export default function Listing({
           </p>
         )}
 
-        <div className="listings grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="listings grid grid-cols-1 lg:grid-cols-2 gap-5">
           {!loading && listings.length > 0
             ? listings.map((listing) => (
                 <Link

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Listing from "./_components/Listing";
-import ListingMapView from "./_components/ListingMapView";
+import GoogleMapView from "./_components/GoogleMapView";
 import { supabase } from "../utils/supabase/client";
 import { toast } from "sonner";
 
@@ -14,7 +14,13 @@ export default function Home() {
   const [inputAddress, setInputAddress] = useState("");
   const [searchedAddress, setSearchedAddress] = useState("");
   const [searchPerformed, setSearchPerformed] = useState(false);
+  const [bedCount, setBedCount] = useState(0);
+  const [bathCount, setBathCount] = useState(0);
+  const [parkingCount, setParkingCount] = useState(0);
+  const [homeType, setHomeType] = useState("");
 
+  
+  //  Search Function
   const handleSearchClick = async () => {
     if (!inputAddress) return;
 
@@ -23,14 +29,22 @@ export default function Home() {
 
     setLoading(true);
 
-    const { data, error } = await supabase
+    let query = supabase
       .from("listing")
       .select("*, listingImages(url, listing_id)")
       .eq("active", true)
+      .gte("bedroom", bedCount)
+      .gte("bathroom", bathCount)
+      .gte("parking", parkingCount)
       .like("address", "%" + inputAddress + "%")
       .order("created_at", { ascending: false });
 
     setLoading(false);
+    if (homeType) {
+      query = query.eq("propertyType", homeType);
+    }
+
+    const { data, error } = await query;
 
     if (error) {
       toast.error("Error fetching listings");
@@ -46,7 +60,7 @@ export default function Home() {
 
   useEffect(() => {
     getListings();
-  }, [type]);
+  }, []);
 
   async function getListings() {
     setLoading(true);
@@ -78,10 +92,15 @@ export default function Home() {
           setSearchedAddress={setInputAddress}
           searchPerformed={searchPerformed}
           lastSearchedAddress={searchedAddress}
+          setBedCount={setBedCount}
+          setBathCount={setBathCount}
+          setParkingCount={setParkingCount}
+          setHomeType={setHomeType}
         />
       </div>
       <div className="map">
-        <ListingMapView />
+        {/* <GoogleMapView/> */}
+        maps
       </div>
     </div>
   );
