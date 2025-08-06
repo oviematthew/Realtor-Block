@@ -24,12 +24,10 @@ export default function Listing({
   setParkingCount,
   setHomeType,
   setType,
+  setCoordinates,
+  setSearchPerformed,
+  getListings,
 }) {
-  const [coordinates, setCoordinates] = useState({
-    latitude: null,
-    longitude: null,
-  });
-
   const resetFilters = () => {
     setBedCount(0);
     setBathCount(0);
@@ -37,6 +35,9 @@ export default function Listing({
     setHomeType("");
     setType("");
     setSearchedAddress("");
+    setCoordinates({ latitude: null, longitude: null });
+    setSearchPerformed(false);
+    getListings();
   };
 
   return (
@@ -58,9 +59,7 @@ export default function Listing({
           <Button
             className="bg-brand p-5 hover:bg-brand-dark text-white hover:cursor-pointer"
             disabled={
-              !searchedAddress ||
-              !coordinates.latitude ||
-              !coordinates.longitude
+              !searchedAddress
             }
             onClick={handleSearchCLick}
           >

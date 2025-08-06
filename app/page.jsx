@@ -19,6 +19,10 @@ export default function Home() {
   const [parkingCount, setParkingCount] = useState(0);
   const [homeType, setHomeType] = useState("");
   const [type, setType] = useState("");
+  const [coordinates, setCoordinates] = useState({
+    latitude: null,
+    longitude: null,
+  });
 
   //  Search Function
   const handleSearchClick = async () => {
@@ -104,6 +108,9 @@ export default function Home() {
             setParkingCount={setParkingCount}
             setHomeType={setHomeType}
             setType={setType}
+            setCoordinates={setCoordinates}
+            setSearchPerformed={setSearchPerformed}
+            getListings={getListings}
           />
         </div>
         <div className="map">
