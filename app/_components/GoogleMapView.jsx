@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { supabase } from "../../utils/supabase/client";
 import { toast } from "sonner";
-import { GoogleMap } from "@react-google-maps/api";
+import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 
 const containerStyle = {
   width: "100%",
@@ -20,6 +20,10 @@ const center = {
 export default function GoogleMapView() {
   const [map, setMap] = useState(null);
 
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY,
+  });
+
   const onLoad = useCallback((map) => {
     // You can just set center directly without bounds
     map.setCenter(center);
@@ -31,7 +35,8 @@ export default function GoogleMapView() {
     setMap(null);
   }, []);
 
-  // if (!isLoaded) return <p>Loading Map...</p>;
+  if (loadError) return <p>Error loading maps</p>;
+  if (!isLoaded) return <p>Loading map...</p>;
 
   return (
     <GoogleMap

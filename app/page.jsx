@@ -5,6 +5,7 @@ import Listing from "./_components/Listing";
 import GoogleMapView from "./_components/GoogleMapView";
 import { supabase } from "../utils/supabase/client";
 import { toast } from "sonner";
+import { LoadScript } from "@react-google-maps/api";
 
 export default function Home() {
   const [type, setType] = useState("rent");
@@ -19,7 +20,6 @@ export default function Home() {
   const [parkingCount, setParkingCount] = useState(0);
   const [homeType, setHomeType] = useState("");
 
-  
   //  Search Function
   const handleSearchClick = async () => {
     if (!inputAddress) return;
@@ -82,26 +82,30 @@ export default function Home() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5">
-      <div>
-        <Listing
-          listings={listings}
-          loading={loading}
-          handleSearchCLick={handleSearchClick}
-          searchedAddress={inputAddress}
-          setSearchedAddress={setInputAddress}
-          searchPerformed={searchPerformed}
-          lastSearchedAddress={searchedAddress}
-          setBedCount={setBedCount}
-          setBathCount={setBathCount}
-          setParkingCount={setParkingCount}
-          setHomeType={setHomeType}
-        />
+    <LoadScript
+      googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}
+      libraries={["places"]}
+    >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5">
+        <div>
+          <Listing
+            listings={listings}
+            loading={loading}
+            handleSearchCLick={handleSearchClick}
+            searchedAddress={inputAddress}
+            setSearchedAddress={setInputAddress}
+            searchPerformed={searchPerformed}
+            lastSearchedAddress={searchedAddress}
+            setBedCount={setBedCount}
+            setBathCount={setBathCount}
+            setParkingCount={setParkingCount}
+            setHomeType={setHomeType}
+          />
+        </div>
+        <div className="map">
+          <GoogleMapView />
+        </div>
       </div>
-      <div className="map">
-        {/* <GoogleMapView/> */}
-        maps
-      </div>
-    </div>
+    </LoadScript>
   );
 }
