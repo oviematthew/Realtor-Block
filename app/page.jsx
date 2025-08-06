@@ -8,7 +8,6 @@ import { toast } from "sonner";
 import { LoadScript } from "@react-google-maps/api";
 
 export default function Home() {
-  const [type, setType] = useState("rent");
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -19,6 +18,7 @@ export default function Home() {
   const [bathCount, setBathCount] = useState(0);
   const [parkingCount, setParkingCount] = useState(0);
   const [homeType, setHomeType] = useState("");
+  const [type, setType] = useState("");
 
   //  Search Function
   const handleSearchClick = async () => {
@@ -42,6 +42,9 @@ export default function Home() {
     setLoading(false);
     if (homeType) {
       query = query.eq("propertyType", homeType);
+    }
+    if (type) {
+      query = query.eq("type", type);
     }
 
     const { data, error } = await query;
@@ -100,6 +103,7 @@ export default function Home() {
             setBathCount={setBathCount}
             setParkingCount={setParkingCount}
             setHomeType={setHomeType}
+            setType={setType}
           />
         </div>
         <div className="map">

@@ -1,10 +1,11 @@
 "use client";
+
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import priceFormat from "../../lib/priceFormat";
 import getTimeAgo from "../../lib/getTimeAgo";
-import { Search } from "lucide-react";
+import { Search, XCircle } from "lucide-react";
 import { Button } from "../../@/components/ui/button";
 import GoogleAddressSearch from "./GoogleAddressSearch";
 import capitalizeText from "../../lib/capitalizeText";
@@ -22,15 +23,26 @@ export default function Listing({
   setBathCount,
   setParkingCount,
   setHomeType,
+  setType,
 }) {
   const [coordinates, setCoordinates] = useState({
     latitude: null,
     longitude: null,
   });
 
+  const resetFilters = () => {
+    setBedCount(0);
+    setBathCount(0);
+    setParkingCount(0);
+    setHomeType("");
+    setType("");
+    setSearchedAddress("");
+  };
+
   return (
     <>
       <div>
+        {/* Search Bar */}
         <div className="search p-3 flex items-center gap-4">
           <GoogleAddressSearch
             selectedAddress={(value) => setSearchedAddress(value)}
@@ -52,39 +64,79 @@ export default function Listing({
             }
             onClick={handleSearchCLick}
           >
-            <Search className="h-4 w-4" />
+            <Search className="h-4 w-4 mr-1" />
             Search
           </Button>
         </div>
 
+        {/* Filter Section */}
         <div className="filter">
           <FilterSection
             setBedCount={setBedCount}
             setBathCount={setBathCount}
             setParkingCount={setParkingCount}
             setHomeType={setHomeType}
+            setType={setType}
           />
         </div>
 
+        {/* Found Results + Cancel */}
         {searchPerformed && (
-          <p className="found text-center mb-4 text-gray-700">
-            Found{" "}
-            <span className="font-bold text-brand">{listings.length}</span>{" "}
-            result
-            {listings.length !== 1 ? "s" : ""} at{" "}
-            <span className="font-bold text-brand">{lastSearchedAddress}</span>
+          <div className="flex items-center justify-center gap-4 mb-4 text-gray-700">
+            <p className="found text-center">
+              Found{" "}
+              <span className="font-bold text-brand">{listings.length}</span>{" "}
+              result{listings.length !== 1 ? "s" : ""} at{" "}
+              <span className="font-bold text-brand">
+                {lastSearchedAddress}
+              </span>
+            </p>
+            <Button
+              variant="ghost"
+              className="flex items-center gap-1 text-red-500 hover:text-red-700 hover:cursor-pointer"
+              onClick={resetFilters}
+            >
+              <XCircle className="w-4 h-4" />
+              Cancel
+            </Button>
+          </div>
+        )}
+
+        {/* No Listings Found */}
+        {!loading && searchPerformed && listings.length === 0 && (
+          <p className="text-center text-gray-500 text-lg mt-10">
+            No listings found based on your search.
           </p>
         )}
 
+        {/* Listings or Skeletons */}
         <div className="listings grid grid-cols-1 lg:grid-cols-2 gap-5">
-          {!loading && listings.length > 0
-            ? listings.map((listing) => (
+          {loading
+            ? Array.from({ length: 8 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="rounded-lg animate-pulse bg-white shadow-md"
+                >
+                  <div className="h-[250px] bg-gray-200 rounded-t-lg" />
+                  <div className="p-2 space-y-2">
+                    <div className="h-5 bg-gray-200 rounded w-1/2" />
+                    <div className="h-4 bg-gray-200 rounded w-1/3" />
+                    <div className="flex gap-4">
+                      <div className="h-4 bg-gray-200 rounded w-1/4" />
+                      <div className="h-4 bg-gray-200 rounded w-1/4" />
+                    </div>
+                    <div className="h-4 bg-gray-200 rounded w-1/3" />
+                    <div className="h-4 bg-gray-200 rounded w-2/3" />
+                  </div>
+                </div>
+              ))
+            : listings.map((listing) => (
                 <Link
                   className="hover:opacity-90 hover:translate-y-[-2px] transition-all duration-200 ease-in-out"
                   href={`/view-listing/${listing.id}`}
                   key={listing.id}
                 >
-                  <div className="listing-item">
+                  <div className="listing-item shadow-sm">
                     <Image
                       src={
                         listing.listingImages[0]?.url ||
@@ -97,13 +149,20 @@ export default function Listing({
                     />
                     <div className="content bg-white rounded-lg rounded-t-none border-2 border-gray-50 p-2 pb-3">
                       <div className="flex items-center justify-between mb-2">
-                        <h3 className="font-bold text-lg text-brand">
+                        <h3 className="font-bold text-xl text-brand">
                           ${priceFormat(listing.price)}
                         </h3>
-                        <p className="text-sm text-brand">
+                        <span
+                          className={`px-3 py-1 text-xs font-semibold rounded-full ${
+                            listing.type === "rent"
+                              ? "bg-blue-100 text-blue-700"
+                              : "bg-green-100 text-green-700"
+                          }`}
+                        >
                           {capitalizeText(listing.type)}
-                        </p>
+                        </span>
                       </div>
+
                       <p className="text-sm text-gray-500 mb-2">
                         {listing.propertyType}
                       </p>
@@ -129,24 +188,6 @@ export default function Listing({
                     </div>
                   </div>
                 </Link>
-              ))
-            : Array.from({ length: 8 }).map((_, index) => (
-                <div
-                  key={index}
-                  className="rounded-lg animate-pulse bg-white shadow-md"
-                >
-                  <div className="h-[250px] bg-gray-200 rounded-t-lg" />
-                  <div className="p-2 space-y-2">
-                    <div className="h-5 bg-gray-200 rounded w-1/2" />
-                    <div className="h-4 bg-gray-200 rounded w-1/3" />
-                    <div className="flex gap-4">
-                      <div className="h-4 bg-gray-200 rounded w-1/4" />
-                      <div className="h-4 bg-gray-200 rounded w-1/4" />
-                    </div>
-                    <div className="h-4 bg-gray-200 rounded w-1/3" />
-                    <div className="h-4 bg-gray-200 rounded w-2/3" />
-                  </div>
-                </div>
               ))}
         </div>
       </div>
