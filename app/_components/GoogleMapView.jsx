@@ -12,12 +12,10 @@ const containerStyle = {
   height: "80vh",
 };
 
-const center = {
-  lat: -3.745,
-  lng: -38.523,
-};
+
 
 export default function GoogleMapView() {
+  const [center, setCenter] = useState({ lat: -3.745, lng: -38.523 });
   const [map, setMap] = useState(null);
 
   const { isLoaded, loadError } = useJsApiLoader({

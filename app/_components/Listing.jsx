@@ -109,9 +109,9 @@ export default function Listing({
         )}
 
         {/* Listings or Skeletons */}
-        <div className="listings grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div className="listings grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-5">
           {loading
-            ? Array.from({ length: 8 }).map((_, index) => (
+            ? Array.from({ length: 9 }).map((_, index) => (
                 <div
                   key={index}
                   className="rounded-lg animate-pulse bg-white shadow-md"
