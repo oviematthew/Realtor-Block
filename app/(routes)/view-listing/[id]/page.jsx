@@ -50,11 +50,44 @@ export default function ViewListingPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center p-10">
-        <Loader className="w-6 h-6 animate-spin" />
+      <div className="max-w-5xl mx-auto p-5 animate-pulse">
+        {/* Title skeleton */}
+        <div className="h-8 bg-gray-300 rounded w-1/3 mb-6"></div>
+
+        {/* Image skeleton */}
+        <div className="rounded-lg overflow-hidden mb-6">
+          <div className="w-full h-[400px] bg-gray-300"></div>
+        </div>
+
+        {/* Small image grid skeleton */}
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          <div className="w-full h-[150px] bg-gray-300 rounded"></div>
+          <div className="w-full h-[150px] bg-gray-300 rounded"></div>
+          <div className="w-full h-[150px] bg-gray-300 rounded"></div>
+        </div>
+
+        {/* Price + address skeleton */}
+        <div className="h-6 bg-gray-300 rounded w-24 mb-2"></div>
+        <div className="h-4 bg-gray-300 rounded w-2/3 mb-6"></div>
+
+        {/* Details grid skeleton */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i}>
+              <div className="h-4 bg-gray-300 rounded w-20 mb-2"></div>
+              <div className="h-4 bg-gray-300 rounded w-12"></div>
+            </div>
+          ))}
+        </div>
+
+        {/* Description skeleton */}
+        <div className="h-5 bg-gray-300 rounded w-32 mb-4"></div>
+        <div className="h-4 bg-gray-300 rounded w-full mb-2"></div>
+        <div className="h-4 bg-gray-300 rounded w-5/6"></div>
       </div>
     );
   }
+
 
   if (!listing) {
     return (
