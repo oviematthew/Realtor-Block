@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { supabase } from "../../utils/supabase/client";
@@ -14,9 +14,18 @@ const containerStyle = {
 
 
 
-export default function GoogleMapView() {
-  const [center, setCenter] = useState({ lat: -3.745, lng: -38.523 });
+export default function GoogleMapView({coordinates}) {
+  const [center, setCenter] = useState({ lat: 43.6532, lng: -79.3832 });
   const [map, setMap] = useState(null);
+
+  useEffect(() => {
+    if (coordinates.latitude && coordinates.longitude) {  
+      setCenter({
+        lat: coordinates.latitude,
+        lng: coordinates.longitude,
+      });
+    }
+  }, [coordinates]);
 
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY,

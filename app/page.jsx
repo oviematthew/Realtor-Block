@@ -114,7 +114,9 @@ export default function Home() {
           />
         </div>
         <div className="map">
-          <GoogleMapView />
+          <GoogleMapView 
+          coordinates={coordinates}
+          />
         </div>
       </div>
     </LoadScript>
