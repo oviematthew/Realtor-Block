@@ -33,6 +33,8 @@ export default function Home() {
 
     setLoading(true);
 
+    const addressQuery = inputAddress.split(",")[0].split(" ")[0]; 
+
     let query = supabase
       .from("listing")
       .select("*, listingImages(url, listing_id)")
@@ -40,7 +42,8 @@ export default function Home() {
       .gte("bedroom", bedCount)
       .gte("bathroom", bathCount)
       .gte("parking", parkingCount)
-      .like("address", "%" + inputAddress + "%")
+      // .like("address", "%" + inputAddress + "%")
+      .like("address", "%" + addressQuery + "%")
       .order("created_at", { ascending: false });
 
     setLoading(false);

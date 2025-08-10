@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { supabase } from "../../../../utils/supabase/client";
@@ -8,8 +8,10 @@ import { toast } from "sonner";
 import priceFormat from "../../../../lib/priceFormat";
 import getTimeAgo from "../../../../lib/getTimeAgo";
 import capitalizeText from "../../../../lib/capitalizeText";
-import { Loader } from "lucide-react";
+import { Loader, Pencil } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
+import Listing from '../../../_components/Listing';
+import { Button } from "../../../../@/components/ui/button";
 
 export default function ViewListingPage() {
   const { id } = useParams();
@@ -18,6 +20,7 @@ export default function ViewListingPage() {
 
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [authorized, setAuthorized] = useState(false);
   
 
     useEffect(() => {
@@ -45,7 +48,19 @@ export default function ViewListingPage() {
       return;
     }
 
+    if (data.createdBy !== user?.primaryEmailAddress?.emailAddress) {
+      setAuthorized(false);
+    }else{
+      setAuthorized(true);
+    }
+
     setListing(data);
+  }
+  
+  function editListing() {
+    if(authorized) {
+      router.push(`/edit-listing/${listing.id}`);
+    }
   }
 
   if (loading) {
@@ -99,9 +114,21 @@ export default function ViewListingPage() {
 
   return (
     <div className="max-w-5xl mx-auto p-5">
-      <h1 className="text-3xl font-bold mb-4 text-brand">
-        {capitalizeText(listing.type)} - {listing.propertyType}
-      </h1>
+      <div className="title flex justify-between items-center mb-5">
+        <h1 className="text-3xl font-bold text-brand">
+          {capitalizeText(listing.type)} - {listing.propertyType}
+        </h1>
+
+        {authorized && (
+          <Button
+                      className="bg-brand p-5 hover:bg-brand-dark text-white hover:cursor-pointer"
+            onClick={editListing}
+          >
+            <Pencil className="w-4 h-4" />
+            Edit
+          </Button>
+        )}
+      </div>
 
       {/* Images Section */}
       <div className="mb-6">

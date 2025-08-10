@@ -10,6 +10,7 @@ import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 const containerStyle = {
   width: "100%",
   height: "80vh",
+  borderRadius: 10,
 };
 
 
@@ -34,7 +35,7 @@ export default function GoogleMapView({coordinates}) {
   const onLoad = useCallback((map) => {
     // You can just set center directly without bounds
     map.setCenter(center);
-    map.setZoom(10);
+    map.setZoom(13);
     setMap(map);
   }, []);
 

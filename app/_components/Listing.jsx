@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import priceFormat from "../../lib/priceFormat";
@@ -28,7 +28,14 @@ export default function Listing({
   setSearchPerformed,
   getListings,
 }) {
+  const inputRef = useRef(null);
+
   const resetFilters = () => {
+
+    // if (inputRef.current) {
+    //   inputRef.current.value = "";
+    // }
+
     setBedCount(0);
     setBathCount(0);
     setParkingCount(0);
@@ -40,12 +47,15 @@ export default function Listing({
     getListings();
   };
 
+  
+
   return (
     <>
       <div>
         {/* Search Bar */}
         <div className="search p-3 flex items-center gap-4">
           <GoogleAddressSearch
+            inputRef={inputRef}
             selectedAddress={(value) => setSearchedAddress(value)}
             latitude={(lat) =>
               setCoordinates((prev) => ({ ...prev, latitude: lat }))
@@ -54,13 +64,12 @@ export default function Listing({
               setCoordinates((prev) => ({ ...prev, longitude: lng }))
             }
             placeholder={"Enter address you want to search"}
+            searchTypes={["geocode"]}
           />
 
           <Button
             className="bg-brand p-5 hover:bg-brand-dark text-white hover:cursor-pointer"
-            disabled={
-              !searchedAddress
-            }
+            disabled={!searchedAddress}
             onClick={handleSearchCLick}
           >
             <Search className="h-4 w-4 mr-1" />
