@@ -32,9 +32,9 @@ export default function Listing({
 
   const resetFilters = () => {
 
-    // if (inputRef.current) {
-    //   inputRef.current.value = "";
-    // }
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
 
     setBedCount(0);
     setBathCount(0);
