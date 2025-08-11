@@ -1,23 +1,37 @@
 import React from "react";
-import { SignUp } from "@clerk/nextjs";
+import { SignUp, ClerkLoaded, ClerkLoading } from "@clerk/nextjs";
 import Image from "next/image";
 
 export default function Page() {
   return (
-    <div className="flex w-full py-10 px-5 md:px-10 gap-5 items-center justify-center md:justify-between min-h-screen">
-      <div className="flex justify-center signin w-full lg:w-1/2">
-        <SignUp />
-      </div>
-      <div className="hidden lg:block lg:w-1/2 ">
-        <Image
-          src="/auth/auth-image-signup.jpg"
-          alt="auth image"
-          width={1200}
-          height={700}
-          style={{ height: "500px", width: "100%" }}
-          className="h-full object-cover rounded-lg shadow-lg"
-        />
-      </div>
-    </div>
+    <>
+      <ClerkLoading>
+        <div className="flex w-full h-screen items-center justify-center">
+          <div className="flex justify-center items-center w-full lg:w-1/2">
+            <div className="animate-pulse w-80 h-96 bg-gray-200 rounded-lg" />
+          </div>
+          <div className="hidden lg:block lg:w-1/2 h-full">
+            <div className="animate-pulse h-full w-full bg-gray-200 rounded-lg" />
+          </div>
+        </div>
+      </ClerkLoading>
+
+      <ClerkLoaded>
+        <div className="flex w-full h-screen gap-5 items-center justify-center md:justify-between">
+          <div className="flex justify-center items-center w-full lg:w-1/2">
+            <SignUp />
+          </div>
+          <div className="hidden lg:block lg:w-1/2 h-full">
+            <Image
+              src="/auth/auth-image-signup.jpg"
+              alt="auth image"
+              width={1200}
+              height={700}
+              className="h-full w-full object-cover rounded-lg shadow-lg"
+            />
+          </div>
+        </div>
+      </ClerkLoaded>
+    </>
   );
 }

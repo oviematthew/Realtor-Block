@@ -96,7 +96,8 @@ export default function Home() {
       googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}
       libraries={["places"]}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-5">
+        {/* Left side - scrollable */}
         <div>
           <Listing
             listings={listings}
@@ -116,12 +117,15 @@ export default function Home() {
             getListings={getListings}
           />
         </div>
-        <div className="map">
-          <GoogleMapView 
-          coordinates={coordinates}
-          />
+
+        {/* Right side - fixed map */}
+        <div className="hidden lg:block">
+          <div className="fixed top-[100px] right-0 w-1/2 p-2">
+            <GoogleMapView coordinates={coordinates} />
+          </div>
         </div>
       </div>
     </LoadScript>
   );
+
 }

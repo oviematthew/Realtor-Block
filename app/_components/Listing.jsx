@@ -118,7 +118,7 @@ export default function Listing({
         )}
 
         {/* Listings or Skeletons */}
-        <div className="listings grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-5">
+        <div className="listings grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-5">
           {loading
             ? Array.from({ length: 9 }).map((_, index) => (
                 <div
