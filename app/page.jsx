@@ -5,7 +5,7 @@ import Listing from "./_components/Listing";
 import GoogleMapView from "./_components/GoogleMapView";
 import { supabase } from "../utils/supabase/client";
 import { toast } from "sonner";
-import { LoadScript } from "@react-google-maps/api";
+
 
 export default function Home() {
   const [listings, setListings] = useState([]);
@@ -92,10 +92,7 @@ export default function Home() {
   }
 
   return (
-    <LoadScript
-      googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}
-      libraries={["places"]}
-    >
+    
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-5">
         {/* Left side - scrollable */}
         <div>
@@ -125,7 +122,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </LoadScript>
   );
 
 }
