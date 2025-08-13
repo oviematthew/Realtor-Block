@@ -6,6 +6,7 @@ import Link from "next/link";
 import { supabase } from "../../utils/supabase/client";
 import { toast } from "sonner";
 import { GoogleMap } from "@react-google-maps/api";
+import MarkerItem from "./MarkerItem";
 
 const containerStyle = {
   width: "100%",
@@ -15,7 +16,7 @@ const containerStyle = {
 
 
 
-export default function GoogleMapView({coordinates}) {
+export default function GoogleMapView({coordinates, listing}) {
   const [center, setCenter] = useState({ lat: 43.6532, lng: -79.3832 });
   const [map, setMap] = useState(null);
 
@@ -33,7 +34,7 @@ export default function GoogleMapView({coordinates}) {
   const onLoad = useCallback((map) => {
     // You can just set center directly without bounds
     map.setCenter(center);
-    map.setZoom(13);
+    map.setZoom(10);
     setMap(map);
   }, []);
 
@@ -50,6 +51,9 @@ export default function GoogleMapView({coordinates}) {
       onUnmount={onUnmount}
     >
       {/* Child components like markers */}
+      {listing.map((item, index) => (
+        <MarkerItem key={index} item={item} />
+      ))}
     </GoogleMap>
-  );
-}
+    );
+  }

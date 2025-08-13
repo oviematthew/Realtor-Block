@@ -8,9 +8,16 @@ import { toast } from "sonner";
 import priceFormat from "../../../../lib/priceFormat";
 import getTimeAgo from "../../../../lib/getTimeAgo";
 import capitalizeText from "../../../../lib/capitalizeText";
-import { Loader, Pencil } from "lucide-react";
+import { Loader, Mail, Pencil } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import Listing from '../../../_components/Listing';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "../../../../@/components/ui/carousel"
 import { Button } from "../../../../@/components/ui/button";
 
 export default function ViewListingPage() {
@@ -74,12 +81,6 @@ export default function ViewListingPage() {
           <div className="w-full h-[400px] bg-gray-300"></div>
         </div>
 
-        {/* Small image grid skeleton */}
-        <div className="grid grid-cols-3 gap-3 mb-6">
-          <div className="w-full h-[150px] bg-gray-300 rounded"></div>
-          <div className="w-full h-[150px] bg-gray-300 rounded"></div>
-          <div className="w-full h-[150px] bg-gray-300 rounded"></div>
-        </div>
 
         {/* Price + address skeleton */}
         <div className="h-6 bg-gray-300 rounded w-24 mb-2"></div>
@@ -103,6 +104,15 @@ export default function ViewListingPage() {
     );
   }
 
+  function handleContactAgent() {
+    const subject = `Inquiry about your listing at ${listing.address}`;
+    const body = `Hi there,\n\nI just saw this listing on RealtorBlock:\nhttps://realtorblock.com/view-listing/${listing.id}\n\nAddress: ${listing.address}\n\nI’m interested in learning more about it. Could you please provide me with more details?\n\nThank you.`;
+
+    window.location.href = `mailto:${
+      listing.createdBy
+    }?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  }
+
 
   if (!listing) {
     return (
@@ -119,46 +129,47 @@ export default function ViewListingPage() {
           {capitalizeText(listing.type)} - {listing.propertyType}
         </h1>
 
-        {authorized && (
+        {authorized ? (
           <Button
-                      className="bg-brand p-5 hover:bg-brand-dark text-white hover:cursor-pointer"
+            className="bg-brand p-5 hover:bg-brand-dark text-white hover:cursor-pointer"
             onClick={editListing}
           >
             <Pencil className="w-4 h-4" />
             Edit
           </Button>
+        ) : (
+          <Button
+            className="bg-brand p-5 hover:bg-brand-dark text-white hover:cursor-pointer"
+            onClick={handleContactAgent}
+          >
+            <Mail className="w-4 h-4" />
+            Contact Agent
+          </Button>
         )}
       </div>
 
       {/* Images Section */}
-      <div className="mb-6">
+      <div className="mb-6 p-10">
         {listing.listingImages.length > 0 ? (
           <>
-            {/* First image full width */}
-            <div className="rounded-lg overflow-hidden mb-4">
-              <Image
-                src={listing.listingImages[0].url}
-                alt={`Main property image at ${listing.address}`}
-                width={1200}
-                height={600}
-                className="object-cover w-full h-[400px] rounded-lg"
-              />
-            </div>
-
             {/* Remaining images in grid */}
-            <div className="grid grid-cols-3 gap-3">
-              {listing.listingImages.slice(1).map((img) => (
-                <div key={img.url} className="rounded-lg overflow-hidden">
-                  <Image
-                    src={img.url}
-                    alt={`Property image at ${listing.address}`}
-                    width={400}
-                    height={250}
-                    className="object-cover w-full h-[150px] rounded-lg"
-                  />
-                </div>
-              ))}
-            </div>
+            <Carousel className="w-full max-w-4xl mx-auto">
+              <CarouselContent>
+                {listing.listingImages.map((img) => (
+                  <CarouselItem key={img.url} className="basis-full">
+                    <Image
+                      src={img.url}
+                      alt={`Property image at ${listing.address}`}
+                      width={1200}
+                      height={600}
+                      className="object-cover w-full h-[400px] rounded-lg"
+                    />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
           </>
         ) : (
           <div className="rounded-lg bg-gray-200 w-full h-64 flex items-center justify-center text-gray-500">

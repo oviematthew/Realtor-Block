@@ -118,7 +118,7 @@ export default function Home() {
         {/* Right side - fixed map */}
         <div className="hidden lg:block">
           <div className="fixed top-[100px] right-0 w-1/2 p-2">
-            <GoogleMapView coordinates={coordinates} />
+            <GoogleMapView coordinates={coordinates} listing={listings} />
           </div>
         </div>
       </div>
