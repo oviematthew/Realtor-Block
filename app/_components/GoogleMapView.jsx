@@ -1,10 +1,6 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { supabase } from "../../utils/supabase/client";
-import { toast } from "sonner";
 import { GoogleMap } from "@react-google-maps/api";
 import MarkerItem from "./MarkerItem";
 
@@ -19,6 +15,7 @@ const containerStyle = {
 export default function GoogleMapView({coordinates, listing}) {
   const [center, setCenter] = useState({ lat: 43.6532, lng: -79.3832 });
   const [map, setMap] = useState(null);
+  const [activeListing, setActiveListing] = useState(null);
 
   useEffect(() => {
     if (coordinates.latitude && coordinates.longitude) {  
@@ -51,9 +48,14 @@ export default function GoogleMapView({coordinates, listing}) {
       onUnmount={onUnmount}
     >
       {/* Child components like markers */}
-      {listing.map((item, index) => (
-        <MarkerItem key={index} item={item} />
+      {listing.map((item) => (
+        <MarkerItem
+          key={item.id}
+          item={item}
+          isActive={activeListing?.id === item.id}
+          setActiveListing={setActiveListing}
+        />
       ))}
     </GoogleMap>
-    );
+  );
   }
