@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import priceFormat from "../../lib/priceFormat";
 import getTimeAgo from "../../lib/getTimeAgo";
-import { Search, XCircle } from "lucide-react";
+import { Loader, Search, XCircle } from "lucide-react";
 import { Button } from "../../@/components/ui/button";
 import GoogleAddressSearch from "./GoogleAddressSearch";
 import capitalizeText from "../../lib/capitalizeText";
@@ -69,10 +69,15 @@ export default function Listing({
 
           <Button
             className="bg-brand p-5 hover:bg-brand-dark text-white hover:cursor-pointer"
-            disabled={!searchedAddress}
+            disabled={!searchedAddress || loading}
             onClick={handleSearchCLick}
           >
-            <Search className="h-4 w-4 mr-1" />
+            {loading ? (
+              <Loader className="animate-spin h-4 w-4 mr-1" />
+            ) : (
+              <Search className="h-4 w-4 mr-1" />
+            )}
+
             Search
           </Button>
         </div>

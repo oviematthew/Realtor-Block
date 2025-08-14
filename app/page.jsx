@@ -30,10 +30,10 @@ export default function Home() {
 
     setSearchPerformed(true);
     setSearchedAddress(inputAddress);
-
     setLoading(true);
 
-    const addressQuery = inputAddress.split(",")[0].split(" ")[0]; 
+    // Get the first part of the address (before any commas) for geocoding to work with full addresses
+    const addressQuery = inputAddress.split(",")[0].split(" ")[0];
 
     let query = supabase
       .from("listing")

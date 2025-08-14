@@ -1,8 +1,7 @@
 "use client";
 import Link from "next/link";
-import React, { use, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
-import { Plus } from "lucide-react";
 import { Button } from "../../@/components/ui/button";
 import { usePathname } from "next/navigation";
 import { UserButton, useUser } from "@clerk/nextjs";
@@ -28,8 +27,8 @@ export default function Header() {
               />
             </Link>
 
-            <nav className="hidden md:flex ml-10 space-x-4">
-              <Link
+            <nav className="flex ml-10 space-x-4">
+              {/* <Link
                 href="/for-sale"
                 className={`text-gray-900 hover:text-[var(--brand)] text-md ${
                   path === "/for-sale" ? "text-brand font-semibold" : ""
@@ -44,7 +43,7 @@ export default function Header() {
                 }`}
               >
                 For Rent
-              </Link>
+              </Link> */}
               <Link
                 href="/agents"
                 className={`text-gray-900 hover:text-[var(--brand)] text-md ${
@@ -59,7 +58,7 @@ export default function Header() {
           <div className="right-div flex items-center ml-auto space-x-4">
             <Button asChild className="bg-brand hover:bg-brand-dark text-white">
               <Link href="/add-new-listing">
-                <Plus /> Post Your Ad
+                Post Ad
               </Link>
             </Button>
             {user ? (
@@ -75,7 +74,7 @@ export default function Header() {
         </div>
 
         {/* Mobile Menu */}
-        <div className="mt-20 w-full py-5 flex  md:hidden">
+        {/* <div className="mt-20 w-full py-5 flex  md:hidden">
           <nav className="w-full flex justify-evenly space-y-3 ml-4">
             <Link
               href="/for-sale"
@@ -102,7 +101,7 @@ export default function Header() {
               Agent Finder
             </Link>
           </nav>
-        </div>
+        </div> */}
       </div>
     </section>
   );

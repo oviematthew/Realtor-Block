@@ -149,7 +149,7 @@ export default function ViewListingPage() {
       </div>
 
       {/* Images Section */}
-      <div className="mb-6 p-10">
+      <div className="mb-6 p-10 lg:p-5">
         {listing.listingImages.length > 0 ? (
           <>
             {/* Remaining images in grid */}
@@ -215,8 +215,8 @@ export default function ViewListingPage() {
             <p>${listing.hoa || 0}</p>
           </div>
           <div>
-            <p className="font-semibold">Listing Active</p>
-            <p>{listing.active ? "Yes" : "No"}</p>
+            <p className="font-semibold">House Type</p>
+            <p>{listing.propertyType}</p>
           </div>
         </div>
 
