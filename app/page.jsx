@@ -32,8 +32,14 @@ export default function Home() {
     setSearchedAddress(inputAddress);
     setLoading(true);
 
-    // Get the first part of the address (before any commas) for geocoding to work with full addresses
-    const addressQuery = inputAddress.split(",")[0].split(" ")[0];
+    // Get the first part of the address (after the first comma) for geocoding to work with full addresses
+    // London ON, Canada will be searched as "London ON" for all matching listing addresses
+    const addressParts = inputAddress.split(",").map((p) => p.trim());
+    const addressQuery =
+      addressParts.length >= 2
+        ? `${addressParts[0]}, ${addressParts[1]}`
+        : inputAddress;
+
 
     let query = supabase
       .from("listing")
@@ -46,7 +52,12 @@ export default function Home() {
       .like("address", "%" + addressQuery + "%")
       .order("created_at", { ascending: false });
 
-    setLoading(false);
+
+    // simulate loading state
+    setTimeout(() => {
+      setLoading(false);
+    }, 300);
+
     if (homeType) {
       query = query.eq("propertyType", homeType);
     }
@@ -63,8 +74,8 @@ export default function Home() {
 
     if (data.length === 0) {
       toast("No listings found with that address");
+      toast(`addressquery: ${addressQuery}`);
     }
-
     setListings(data);
   };
 

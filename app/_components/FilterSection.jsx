@@ -198,7 +198,7 @@ export default function FilterSection({
           >
             <h2 className="flex items-center gap-2">
               {" "}
-              <FileText className="h-5 w-5 text-brand" /> For Rent
+              <FileText className="h-5 w-5 text-brand" />Rent
             </h2>
           </SelectItem>
           <SelectItem
@@ -207,7 +207,7 @@ export default function FilterSection({
           >
             <h2 className="flex items-center gap-2">
               {" "}
-              <FileText className="h-5 w-5 text-brand" /> For Sale
+              <FileText className="h-5 w-5 text-brand" />Sale
             </h2>
           </SelectItem>
         </SelectContent>
