@@ -74,7 +74,6 @@ export default function Home() {
 
     if (data.length === 0) {
       toast("No listings found with that address");
-      toast(`addressquery: ${addressQuery}`);
     }
     setListings(data);
   };
