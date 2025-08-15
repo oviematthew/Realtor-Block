@@ -232,10 +232,7 @@ export default function ViewListingPage() {
       </div>
 
       <div className="map">
-        {/* <SingleGoogleMapView
-          item={listing}
-          coordinates={listing.coordinates}
-        /> */}
+        <SingleGoogleMapView listing={listing} coordinates={listing.coordinates} />
       </div>
     </div>
   );

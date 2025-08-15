@@ -1,8 +1,6 @@
 "use client";
-
 import React, { useCallback, useEffect, useState } from "react";
-import { GoogleMap } from "@react-google-maps/api";
-import { MarkerF, OverlayView } from "@react-google-maps/api";
+import { GoogleMap, MarkerF, OverlayView } from "@react-google-maps/api";
 import MarkerListingItem from "./MarkerListingItem";
 
 const containerStyle = {
@@ -11,15 +9,13 @@ const containerStyle = {
   borderRadius: 10,
 };
 
-
-
-export default function SingleGoogleMapView({coordinates}) {
+export default function SingleGoogleMapView({ listing, coordinates }) {
   const [center, setCenter] = useState({ lat: 43.6532, lng: -79.3832 });
   const [map, setMap] = useState(null);
-  const [activeListing, setActiveListing] = useState(null);
+  const [showInfo, setShowInfo] = useState(false);
 
   useEffect(() => {
-    if (coordinates.latitude && coordinates.longitude) {  
+    if (coordinates?.latitude && coordinates?.longitude) {
       setCenter({
         lat: coordinates.latitude,
         lng: coordinates.longitude,
@@ -27,14 +23,13 @@ export default function SingleGoogleMapView({coordinates}) {
     }
   }, [coordinates]);
 
-  
+  const closeInfo = () => setShowInfo(false);
 
   const onLoad = useCallback((map) => {
-    // You can just set center directly without bounds
     map.setCenter(center);
-    map.setZoom(10);
+    map.setZoom(14);
     setMap(map);
-  }, []);
+  }, [center]);
 
   const onUnmount = useCallback(() => {
     setMap(null);
@@ -44,20 +39,18 @@ export default function SingleGoogleMapView({coordinates}) {
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={center}
-      zoom={10}
+      zoom={30}
       onLoad={onLoad}
       onUnmount={onUnmount}
     >
-      {/* Child components like markers */}
-
       <MarkerF
         position={{
           lat: coordinates.latitude,
           lng: coordinates.longitude,
         }}
-        onClick={() => setActiveListing(item)}
+        // onClick={() => setShowInfo(true)} // reopen if closed
       >
-        {isActive && (
+        {/* {showInfo && (
           <OverlayView
             position={{
               lat: coordinates.latitude,
@@ -66,11 +59,11 @@ export default function SingleGoogleMapView({coordinates}) {
             mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
           >
             <div>
-              <MarkerListingItem item={item} closeInfo={closeInfo} />
+              <MarkerListingItem item={listing} closeInfo={closeInfo} />
             </div>
           </OverlayView>
-        )}
+        )} */}
       </MarkerF>
     </GoogleMap>
   );
-  }
+}
