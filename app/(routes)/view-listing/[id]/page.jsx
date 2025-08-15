@@ -11,6 +11,7 @@ import capitalizeText from "../../../../lib/capitalizeText";
 import { Loader, Mail, Pencil } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import Listing from '../../../_components/Listing';
+import SingleGoogleMapView from '../../../_components/SingleGoogleMapView';
 import {
   Carousel,
   CarouselContent,
@@ -228,6 +229,13 @@ export default function ViewListingPage() {
         <p className="text-gray-400 text-sm">
           Posted {getTimeAgo(listing.created_at)}
         </p>
+      </div>
+
+      <div className="map">
+        {/* <SingleGoogleMapView
+          item={listing}
+          coordinates={listing.coordinates}
+        /> */}
       </div>
     </div>
   );
