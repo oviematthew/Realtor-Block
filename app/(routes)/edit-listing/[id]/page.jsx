@@ -105,7 +105,10 @@ export default function EditListing() {
     try {
       const { data, error } = await supabase
         .from("listing")
-        .update(valueData)
+        .update({
+          ...valueData,
+          agentName: user?.firstName || "",
+        })
         .eq("id", id)
         .select();
 
@@ -162,7 +165,8 @@ export default function EditListing() {
       }
       return true;
     } catch (err) {
-      toast.error("Something went wrong.");
+      toast.error("Something went wrong. error is:", err);
+      console.log(err)
     } finally {
       setSubmitting(false);
     }
