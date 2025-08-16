@@ -8,9 +8,8 @@ import { toast } from "sonner";
 import priceFormat from "../../../../lib/priceFormat";
 import getTimeAgo from "../../../../lib/getTimeAgo";
 import capitalizeText from "../../../../lib/capitalizeText";
-import { Loader, Mail, Pencil } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
-import Listing from '../../../_components/Listing';
 import SingleGoogleMapView from '../../../_components/SingleGoogleMapView';
 import {
   Carousel,
@@ -20,6 +19,7 @@ import {
   CarouselPrevious,
 } from "../../../../@/components/ui/carousel"
 import { Button } from "../../../../@/components/ui/button";
+import AgentDetail from "../_components/AgentDetail"
 
 export default function ViewListingPage() {
   const { id } = useParams();
@@ -143,8 +143,7 @@ export default function ViewListingPage() {
             className="bg-brand p-5 hover:bg-brand-dark text-white hover:cursor-pointer"
             onClick={handleContactAgent}
           >
-            <Mail className="w-4 h-4" />
-            Contact Agent
+            Message Agent
           </Button>
         )}
       </div>
@@ -234,6 +233,12 @@ export default function ViewListingPage() {
       <div className="map">
         <SingleGoogleMapView listing={listing} coordinates={listing.coordinates} />
       </div>
+
+      <div className="agent-section mt-5">
+        <h2 className="text-lg font-semibold mb-2">Contact Agent</h2>
+        <AgentDetail listing={listing} handleContactAgent={handleContactAgent} />
+      </div>
     </div>
+
   );
 }

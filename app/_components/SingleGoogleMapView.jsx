@@ -1,15 +1,14 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
 import { GoogleMap, MarkerF, OverlayView } from "@react-google-maps/api";
-import MarkerListingItem from "./MarkerListingItem";
 
 const containerStyle = {
   width: "100%",
-  height: "85vh",
+  height: "30vh",
   borderRadius: 10,
 };
 
-export default function SingleGoogleMapView({ listing, coordinates }) {
+export default function SingleGoogleMapView({ coordinates }) {
   const [center, setCenter] = useState({ lat: 43.6532, lng: -79.3832 });
   const [map, setMap] = useState(null);
   const [showInfo, setShowInfo] = useState(false);
@@ -23,7 +22,6 @@ export default function SingleGoogleMapView({ listing, coordinates }) {
     }
   }, [coordinates]);
 
-  const closeInfo = () => setShowInfo(false);
 
   const onLoad = useCallback((map) => {
     map.setCenter(center);
