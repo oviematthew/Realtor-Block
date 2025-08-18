@@ -10,6 +10,7 @@ import { Label } from "../../../../@/components/ui/label";
 import { Input } from "../../../../@/components/ui/input";
 import { Textarea } from "../../../../@/components/ui/textarea";
 import { Button } from "../../../../@/components/ui/button";
+import { Checkbox } from "../../../../@/components/ui/checkbox";
 import {
   RadioGroup,
   RadioGroupItem,
@@ -34,7 +35,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../../../../@/components/ui/alert-dialog";
-import { on } from "events";
 
 export default function EditListing() {
   const { user, isLoaded } = useUser();
@@ -254,6 +254,7 @@ export default function EditListing() {
                 propertyType: listing?.propertyType || "",
                 profileImage: user?.imageUrl || "",
                 createdByUser: user?.firstName || "",
+                utilities: listing?.utilities || [],
               }}
               enableReinitialize
               onSubmit={(values) => {
@@ -427,6 +428,54 @@ export default function EditListing() {
                         placeholder="Write a brief description of the property..."
                         className="w-full border rounded-md p-2 "
                       />
+                    </div>
+
+                    {/* Utilities Section */}
+                    <div className="my-5">
+                      <h2 className="text-gray-500 mb-2">Utilities</h2>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        {[
+                          "Water",
+                          "Hydro",
+                          "WiFi",
+                          "Heating",
+                          "Air Conditioning",
+                          "Gas",
+                          "Cable TV",
+                          "Sewer",
+                          "Trash Removal",
+                        ].map((utility) => (
+                          <div
+                            key={utility}
+                            className="flex items-center space-x-2"
+                          >
+                            <input
+                              type="checkbox"
+                              id={utility}
+                              checked={
+                                values.utilities?.includes(utility) || false
+                              }
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setFieldValue("utilities", [
+                                    ...(values.utilities || []),
+                                    utility,
+                                  ]);
+                                } else {
+                                  setFieldValue(
+                                    "utilities",
+                                    (values.utilities || []).filter(
+                                      (u) => u !== utility
+                                    )
+                                  );
+                                }
+                              }}
+                              className="w-4 h-4 border-gray-300 rounded"
+                            />
+                            <Label htmlFor={utility}>{utility}</Label>
+                          </div>
+                        ))}
+                      </div>
                     </div>
 
                     {/* Profile Images */}

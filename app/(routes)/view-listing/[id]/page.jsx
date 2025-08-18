@@ -185,40 +185,58 @@ export default function ViewListingPage() {
         </p>
         <p className="text-gray-700 mb-4">{listing.address}</p>
 
+        <h2 className="text-lg font-semibold mt-5">Details</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div>
-            <p className="font-semibold">Bedrooms</p>
+            <p className="font-semibold text-brand">Bedrooms</p>
             <p>{listing.bedroom}</p>
           </div>
           <div>
-            <p className="font-semibold">Bathrooms</p>
+            <p className="font-semibold text-brand">Bathrooms</p>
             <p>{listing.bathroom}</p>
           </div>
           <div>
-            <p className="font-semibold">Parking</p>
+            <p className="font-semibold text-brand">Parking</p>
             <p>{listing.parking}</p>
           </div>
           <div>
-            <p className="font-semibold">Built In</p>
+            <p className="font-semibold text-brand">Built In</p>
             <p>{listing.builtIn}</p>
           </div>
           <div>
-            <p className="font-semibold">Lot Size (sq.ft)</p>
+            <p className="font-semibold text-brand">Lot Size (sq.ft)</p>
             <p>{listing.lotSize}</p>
           </div>
           <div>
-            <p className="font-semibold">Area (sq.ft)</p>
+            <p className="font-semibold text-brand">Area (sq.ft)</p>
             <p>{listing.area}</p>
           </div>
           <div>
-            <p className="font-semibold">HOA (per month)</p>
+            <p className="font-semibold text-brand">HOA (per month)</p>
             <p>${listing.hoa || 0}</p>
           </div>
           <div>
-            <p className="font-semibold">House Type</p>
+            <p className="font-semibold text-brand">House Type</p>
             <p>{listing.propertyType}</p>
           </div>
         </div>
+
+        {/* Utilities Pills */}
+        {listing.utilities && listing.utilities.length > 0 && (
+          <div className="my-10">
+            <h2 className="text-lg font-semibold mb-2">Utilities</h2>
+            <div className="flex flex-wrap gap-2">
+              {listing.utilities.map((utility) => (
+                <span
+                  key={utility}
+                  className="px-3 py-1 text-sm font-medium rounded-full bg-brand text-white"
+                >
+                  {utility}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
 
         <h2 className="text-lg font-semibold mb-2">Description</h2>
         <p className="text-gray-700 mb-6 whitespace-pre-line">
@@ -230,15 +248,20 @@ export default function ViewListingPage() {
         </p>
       </div>
 
-      <div className="map">
-        <SingleGoogleMapView listing={listing} coordinates={listing.coordinates} />
+      <div className="map my-5">
+        <SingleGoogleMapView
+          listing={listing}
+          coordinates={listing.coordinates}
+        />
       </div>
 
-      <div className="agent-section mt-5">
+      <div className="agent-section my-10">
         <h2 className="text-lg font-semibold mb-2">Contact Agent</h2>
-        <AgentDetail listing={listing} handleContactAgent={handleContactAgent} />
+        <AgentDetail
+          listing={listing}
+          handleContactAgent={handleContactAgent}
+        />
       </div>
     </div>
-
   );
 }
