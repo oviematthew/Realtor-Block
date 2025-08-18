@@ -1,6 +1,7 @@
-import Image from 'next/image'
-import React from 'react'
+import Image from "next/image";
+import React from "react";
 import { useUser } from "@clerk/nextjs";
+import getAgentFirstName from "../../../../lib/getAgentFirstName";
 import { Button } from "../../../../@/components/ui/button";
 
 export default function AgentDetail({ listing, handleContactAgent }) {
@@ -14,11 +15,11 @@ export default function AgentDetail({ listing, handleContactAgent }) {
           alt="Listing Agent Profile Image"
           width={50}
           height={50}
-          className="rounded-full "
+          className="rounded-full"
         />
         <div className="flex flex-col justify-center">
-          <h2 className='font-semibold'>{listing?.agentName || "Agent"}</h2>
-          <h3 className="text-sm ">{listing?.createdBy}</h3>
+          <h2 className="font-semibold">{getAgentFirstName(listing, user)}</h2>
+          <h3 className="text-sm">{listing?.createdBy}</h3>
         </div>
       </div>
       <Button
