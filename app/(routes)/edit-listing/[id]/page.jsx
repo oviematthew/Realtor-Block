@@ -107,7 +107,7 @@ export default function EditListing() {
         .from("listing")
         .update({
           ...valueData,
-          agentName: user?.firstName || "",
+          agentName: user?.firstName || user?.username || "Agent", // fallback for user first name or if no first name, uses their mandatory username
         })
         .eq("id", id)
         .select();
