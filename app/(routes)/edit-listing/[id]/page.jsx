@@ -449,14 +449,13 @@ export default function EditListing() {
                             key={utility}
                             className="flex items-center space-x-2"
                           >
-                            <input
-                              type="checkbox"
+                            <Checkbox
                               id={utility}
                               checked={
                                 values.utilities?.includes(utility) || false
                               }
-                              onChange={(e) => {
-                                if (e.target.checked) {
+                              onCheckedChange={(checked) => {
+                                if (checked) {
                                   setFieldValue("utilities", [
                                     ...(values.utilities || []),
                                     utility,
@@ -470,7 +469,6 @@ export default function EditListing() {
                                   );
                                 }
                               }}
-                              className="w-4 h-4 border-gray-300 rounded"
                             />
                             <Label htmlFor={utility}>{utility}</Label>
                           </div>
@@ -486,6 +484,10 @@ export default function EditListing() {
                       <FileUpload
                         setImages={(value) => setImages(value)}
                         imageList={listing?.listingImages || []}
+                        setImageList={(val) =>
+                          setListing({ ...listing, listingImages: val })
+                        }
+                        listingId={id}
                       />
                     </div>
 
@@ -505,7 +507,7 @@ export default function EditListing() {
                       </Button>
 
                       <AlertDialog>
-                        <AlertDialogTrigger>
+                        <AlertDialogTrigger asChild>
                           <Button
                             className="bg-brand hover:bg-brand-dark hover:cursor-pointer font-text text-white"
                             type="button"

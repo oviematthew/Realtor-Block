@@ -183,7 +183,7 @@ export default function ViewListingPage() {
         <p className="text-xl font-semibold mb-2 text-brand">
           ${priceFormat(listing.price)}
         </p>
-        <p className="text-gray-700 mb-4">{listing.address}</p>
+        <p className="text-gray-700 mb-5">{listing.address}</p>
 
         <h2 className="text-lg font-semibold mt-5">Details</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
