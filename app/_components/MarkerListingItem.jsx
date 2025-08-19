@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import priceFormat from "../../lib/priceFormat";
+import priceFormat from "@/lib/priceFormat";
 import { X} from "lucide-react";
 import { Button } from "../../@/components/ui/button";
 

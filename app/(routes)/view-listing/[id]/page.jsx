@@ -5,21 +5,21 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { supabase } from "../../../../utils/supabase/client";
 import { toast } from "sonner";
-import priceFormat from "../../../../lib/priceFormat";
-import getTimeAgo from "../../../../lib/getTimeAgo";
-import capitalizeText from "../../../../lib/capitalizeText";
+import priceFormat from "@/lib/priceFormat";
+import getTimeAgo from "@/lib/getTimeAgo";
+import capitalizeText from "@/lib/capitalizeText";
 import { Pencil } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
-import SingleGoogleMapView from '../../../_components/SingleGoogleMapView';
+import SingleGoogleMapView from "../../../_components/SingleGoogleMapView";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "../../../../@/components/ui/carousel"
+} from "../../../../@/components/ui/carousel";
 import { Button } from "../../../../@/components/ui/button";
-import AgentDetail from "../_components/AgentDetail"
+import AgentDetail from "../_components/AgentDetail";
 
 export default function ViewListingPage() {
   const { id } = useParams();
@@ -29,16 +29,15 @@ export default function ViewListingPage() {
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [authorized, setAuthorized] = useState(false);
-  
 
-    useEffect(() => {
-      if (!id) {
-        // Redirect immediately if no id param
-        router.replace("/");
-        return;
-      }
-      fetchListing();
-    }, [id, router]);
+  useEffect(() => {
+    if (!id) {
+      // Redirect immediately if no id param
+      router.replace("/");
+      return;
+    }
+    fetchListing();
+  }, [id, router]);
 
   async function fetchListing() {
     setLoading(true);
@@ -58,15 +57,15 @@ export default function ViewListingPage() {
 
     if (data.createdBy !== user?.primaryEmailAddress?.emailAddress) {
       setAuthorized(false);
-    }else{
+    } else {
       setAuthorized(true);
     }
 
     setListing(data);
   }
-  
+
   function editListing() {
-    if(authorized) {
+    if (authorized) {
       router.push(`/edit-listing/${listing.id}`);
     }
   }
@@ -81,7 +80,6 @@ export default function ViewListingPage() {
         <div className="rounded-lg overflow-hidden mb-6">
           <div className="w-full h-[400px] bg-gray-300"></div>
         </div>
-
 
         {/* Price + address skeleton */}
         <div className="h-6 bg-gray-300 rounded w-24 mb-2"></div>
@@ -113,7 +111,6 @@ export default function ViewListingPage() {
       listing.createdBy
     }?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }
-
 
   if (!listing) {
     return (
@@ -222,38 +219,37 @@ export default function ViewListingPage() {
         </div>
 
         {/* Utilities Pills */}
-<div className="my-10">
-  <h2 className="text-lg font-semibold mb-2">Utilities</h2>
-  <div className="flex flex-wrap gap-2">
-    {[
-      "Water",
-      "Hydro",
-      "WiFi",
-      "Heating",
-      "Air Conditioning",
-      "Gas",
-      "Cable TV",
-      "Sewer",
-      "Trash Removal",
-    ].map((utility) => {
-      const isIncluded = listing.utilities?.includes(utility);
+        <div className="my-10">
+          <h2 className="text-lg font-semibold mb-2">Utilities</h2>
+          <div className="flex flex-wrap gap-2">
+            {[
+              "Water",
+              "Hydro",
+              "WiFi",
+              "Heating",
+              "Air Conditioning",
+              "Gas",
+              "Cable TV",
+              "Sewer",
+              "Trash Removal",
+            ].map((utility) => {
+              const isIncluded = listing.utilities?.includes(utility);
 
-      return (
-        <span
-          key={utility}
-          className={`px-3 py-1 text-sm font-medium rounded-full ${
-            isIncluded
-              ? "bg-brand text-white"
-              : "bg-gray-200 text-gray-500 line-through"
-          }`}
-        >
-          {utility}
-        </span>
-      );
-    })}
-  </div>
-</div>
-
+              return (
+                <span
+                  key={utility}
+                  className={`px-3 py-1 text-sm font-medium rounded-full ${
+                    isIncluded
+                      ? "bg-brand text-white"
+                      : "bg-gray-200 text-gray-500"
+                  }`}
+                >
+                  {utility}
+                </span>
+              );
+            })}
+          </div>
+        </div>
 
         <h2 className="text-lg font-semibold mb-2">Description</h2>
         <p className="text-gray-700 mb-6 whitespace-pre-line">

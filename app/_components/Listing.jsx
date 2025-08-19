@@ -3,12 +3,12 @@
 import React, { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import priceFormat from "../../lib/priceFormat";
-import getTimeAgo from "../../lib/getTimeAgo";
+import priceFormat from "@/lib/priceFormat";
+import getTimeAgo from "@/lib/getTimeAgo";
 import { Loader, Search, XCircle } from "lucide-react";
 import { Button } from "../../@/components/ui/button";
 import GoogleAddressSearch from "./GoogleAddressSearch";
-import capitalizeText from "../../lib/capitalizeText";
+import capitalizeText from "@/lib/capitalizeText";
 import FilterSection from "./FilterSection";
 
 export default function Listing({
