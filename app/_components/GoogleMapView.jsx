@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { GoogleMap } from "@react-google-maps/api";
 import MarkerItem from "./MarkerItem";
+import { usePathname } from "next/navigation";
 
 const containerStyle = {
   width: "100%",
@@ -16,6 +17,7 @@ export default function GoogleMapView({coordinates, listing}) {
   const [center, setCenter] = useState({ lat: 43.6532, lng: -79.3832 });
   const [map, setMap] = useState(null);
   const [activeListing, setActiveListing] = useState(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     if (coordinates.latitude && coordinates.longitude) {  
@@ -41,6 +43,7 @@ export default function GoogleMapView({coordinates, listing}) {
 
   return (
     <GoogleMap
+      key={pathname}
       mapContainerStyle={containerStyle}
       center={center}
       zoom={10}
