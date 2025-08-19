@@ -395,7 +395,9 @@ export default function EditListing() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
                       <div className="flex gap-2 flex-col">
-                        <h2 className="text-gray-500">Selling Price ($)</h2>
+                        <h2 className="text-gray-500">
+                          Rent / Selling Price ($)
+                        </h2>
                         <Input
                           type="number"
                           name="price"
@@ -424,7 +426,10 @@ export default function EditListing() {
                         name="description"
                         onChange={handleChange}
                         rows={6}
-                        value={values?.description || ""}
+                        value={
+                          values?.description ||
+                          `This is a ${values.propertyType || "condo"} for ${values.type} in ${listing?.address}. It has ${values?.bedroom || "2"} bedrooms and ${values?.bathroom || "2"} bathrooms.  `
+                        }
                         placeholder="Write a brief description of the property..."
                         className="w-full border rounded-md p-2 "
                       />

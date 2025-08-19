@@ -107,7 +107,7 @@ export default function ViewListingPage() {
 
   function handleContactAgent() {
     const subject = `Inquiry about your listing at ${listing.address}`;
-    const body = `Hi there,\n\nI just saw this listing on RealtorBlock:\nhttps://realtorblock.com/view-listing/${listing.id}\n\nAddress: ${listing.address}\n\nI’m interested in learning more about it. Could you please provide me with more details?\n\nThank you.`;
+    const body = `Hi there,\n\nI just saw this listing for ${listing.type} on RealtorBlock:\nhttps://realtorblock.com/view-listing/${listing.id}\n\nAddress: ${listing.address}\n\nI’m interested in learning more about it. Could you please provide me with more details?\n\nThank you.`;
 
     window.location.href = `mailto:${
       listing.createdBy
@@ -222,21 +222,38 @@ export default function ViewListingPage() {
         </div>
 
         {/* Utilities Pills */}
-        {listing.utilities && listing.utilities.length > 0 && (
-          <div className="my-10">
-            <h2 className="text-lg font-semibold mb-2">Utilities</h2>
-            <div className="flex flex-wrap gap-2">
-              {listing.utilities.map((utility) => (
-                <span
-                  key={utility}
-                  className="px-3 py-1 text-sm font-medium rounded-full bg-brand text-white"
-                >
-                  {utility}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
+<div className="my-10">
+  <h2 className="text-lg font-semibold mb-2">Utilities</h2>
+  <div className="flex flex-wrap gap-2">
+    {[
+      "Water",
+      "Hydro",
+      "WiFi",
+      "Heating",
+      "Air Conditioning",
+      "Gas",
+      "Cable TV",
+      "Sewer",
+      "Trash Removal",
+    ].map((utility) => {
+      const isIncluded = listing.utilities?.includes(utility);
+
+      return (
+        <span
+          key={utility}
+          className={`px-3 py-1 text-sm font-medium rounded-full ${
+            isIncluded
+              ? "bg-brand text-white"
+              : "bg-gray-200 text-gray-500 line-through"
+          }`}
+        >
+          {utility}
+        </span>
+      );
+    })}
+  </div>
+</div>
+
 
         <h2 className="text-lg font-semibold mb-2">Description</h2>
         <p className="text-gray-700 mb-6 whitespace-pre-line">
