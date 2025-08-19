@@ -38,3 +38,8 @@ html {
 .font-text {
   font-family: var(--font-inter);
 }
+
+.cl-internal-mkizyn{
+  box-shadow: none;
+}
+
