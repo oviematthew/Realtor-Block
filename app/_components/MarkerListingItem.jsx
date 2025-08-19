@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import priceFormat from "@/lib/priceFormat";
+import formatPrice from "@/lib/formatPrice";
 import { X} from "lucide-react";
 import { Button } from "../../@/components/ui/button";
 
@@ -21,7 +21,7 @@ export default function MarkerListingItem({ item, closeInfo }) {
 
       <p className="text-gray-600 mt-2 text-md">{item.propertyType}</p>
       <h2 className="text-brand font-semibold mt-2 text-md">
-        ${priceFormat(item.price)}
+        ${formatPrice(item.price)}
       </h2>
       <p className="text-gray-600 mt-2 text-md">{item.address}</p>
 

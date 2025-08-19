@@ -3,7 +3,7 @@
 import React, { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import priceFormat from "@/lib/priceFormat";
+import formatPrice from "@/lib/formatPrice";
 import getTimeAgo from "@/lib/getTimeAgo";
 import { Loader, Search, XCircle } from "lucide-react";
 import { Button } from "../../@/components/ui/button";
@@ -163,7 +163,7 @@ export default function Listing({
                     <div className="content bg-white rounded-lg rounded-t-none border-2 border-gray-50 p-2 pb-3">
                       <div className="flex items-center justify-between mb-2">
                         <h3 className="font-bold text-xl text-brand">
-                          ${priceFormat(listing.price)}
+                          ${formatPrice(listing.price)}
                         </h3>
                         <span
                           className={`px-3 py-1 text-xs font-semibold rounded-full ${

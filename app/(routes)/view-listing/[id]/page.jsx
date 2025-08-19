@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { supabase } from "../../../../utils/supabase/client";
 import { toast } from "sonner";
-import priceFormat from "@/lib/priceFormat";
+import formatPrice from "@/lib/formatPrice";
 import getTimeAgo from "@/lib/getTimeAgo";
 import capitalizeText from "@/lib/capitalizeText";
 import { Pencil } from "lucide-react";
@@ -178,7 +178,7 @@ export default function ViewListingPage() {
       {/* Details */}
       <div className="bg-white p-6 rounded-lg ">
         <p className="text-xl font-semibold mb-2 text-brand">
-          ${priceFormat(listing.price)}
+          ${formatPrice(listing.price)}
         </p>
         <p className="text-gray-700 mb-5">{listing.address}</p>
 
