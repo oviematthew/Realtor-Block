@@ -123,8 +123,9 @@ export default function ViewListingPage() {
   return (
     <div className="max-w-5xl mx-auto p-5">
       <div className="title flex justify-between items-center mb-5">
-        <h1 className="text-3xl font-bold text-brand">
-          {capitalizeText(listing.type)} - {listing.propertyType}
+        <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-brand">
+          {listing.propertyType}
+          {" "}for {capitalizeText(listing.type)}
         </h1>
 
         {authorized ? (
