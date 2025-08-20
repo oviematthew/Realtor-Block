@@ -17,13 +17,13 @@ A modern, full-stack real estate platform built with Next.js that allows users t
 ## 🛠 Technology Stack
 
 ### Frontend
-- **Framework**: Next.js 15.3.2 (React 19)
-- **Styling**: Tailwind CSS 4.1.8
-- **UI Components**: Radix UI
+- **Framework**: Next.js 
+- **Styling**: Tailwind CSS
+- **UI Components**: ShadCn
 - **Icons**: Lucide React
 - **Forms**: Formik
 - **Notifications**: Sonner
-- **Maps**: React Google Maps API
+- **Maps**: Google Maps API
 
 ### Backend & Services
 - **Authentication**: Clerk
@@ -37,11 +37,6 @@ A modern, full-stack real estate platform built with Next.js that allows users t
 - **Package Manager**: npm
 
 ## 📋 Prerequisites
-
-Before you begin, ensure you have the following installed:
-- Node.js (version 18 or higher)
-- npm or yarn package manager
-- Git
 
 You'll also need accounts for:
 - [Clerk](https://clerk.com) - Authentication
@@ -67,30 +62,6 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 NEXT_PUBLIC_GOOGLE_PLACES_API_KEY=your_google_places_api_key
 ```
 
-## 🚀 Installation & Setup
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/oviematthew/Realtor-Block.git
-   cd Realtor-Block
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables**
-   - Copy the environment variables above into a `.env.local` file
-   - Replace placeholder values with your actual API keys
-
-4. **Run the development server**
-   ```bash
-   npm run dev
-   ```
-
-5. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
 
 ## 🔐 Authentication (Clerk)
 
@@ -139,7 +110,8 @@ CREATE TABLE listing (
   active BOOLEAN DEFAULT true,
   agentName TEXT,
   created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW()
+  updated_at TIMESTAMP DEFAULT NOW(),
+  utilities JSONB
 );
 ```
 
@@ -161,11 +133,6 @@ CREATE TABLE listingImages (
 5. Run the SQL commands above in the Supabase SQL editor
 6. Set up Row Level Security (RLS) policies as needed
 
-### Features Used
-- Real-time subscriptions
-- Row Level Security
-- Automatic API generation
-- Database functions and triggers
 
 ## 📁 Storage (Supabase Storage)
 
@@ -220,10 +187,6 @@ The application integrates with Google APIs for location services:
 4. Add your API key to `.env.local`
 5. Configure API key restrictions in GCP console
 
-### Security
-- Restrict API key to specific domains
-- Enable only necessary APIs
-- Monitor usage in GCP console
 
 ## 📂 Project Structure
 
@@ -259,75 +222,15 @@ realtor-block/
 └── package.json
 ```
 
-## 🔨 Available Scripts
 
-```bash
-# Development
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
-npm run lint         # Run ESLint
 
-# Other commands
-npm install          # Install dependencies
-npm audit            # Check for vulnerabilities
-```
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-1. Connect your GitHub repository to Vercel
-2. Add environment variables in Vercel dashboard
-3. Deploy automatically on push to main branch
-
-### Other Platforms
-The application can be deployed to any platform that supports Next.js:
-- Netlify
-- AWS Amplify
-- Digital Ocean App Platform
-- Railway
-
-### Environment Variables for Production
-Ensure all environment variables are properly set in your deployment platform:
-- Clerk keys for authentication
-- Supabase credentials for database/storage
-- Google API key for maps functionality
-
-## 🛡️ Security Considerations
-
-- Environment variables are properly configured
-- API keys are restricted to specific domains
-- Database uses Row Level Security (RLS)
-- User authentication is handled by Clerk
-- File uploads are validated and restricted
-- CORS policies are properly configured
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
+2. Create a feature branch (`git checkout -b feature`)
+3. Commit your changes (`git commit -m 'Added feature'`)
+4. Push to the branch (`git push origin feature`)
 5. Open a Pull Request
 
-## 📝 License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## 🆘 Support
-
-If you encounter any issues or have questions:
-1. Check the existing GitHub issues
-2. Create a new issue with detailed information
-3. Join our community discussions
-
-## 🔗 Links
-
-- [Live Demo](https://your-deployment-url.vercel.app)
-- [Documentation](https://github.com/oviematthew/Realtor-Block/wiki)
-- [Issues](https://github.com/oviematthew/Realtor-Block/issues)
-- [Pull Requests](https://github.com/oviematthew/Realtor-Block/pulls)
-
----
-
-Built with ❤️ by [Ovie Matthew](https://github.com/oviematthew)
