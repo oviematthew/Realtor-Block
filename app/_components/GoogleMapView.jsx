@@ -20,7 +20,7 @@ export default function GoogleMapView({coordinates, listing}) {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (coordinates.latitude && coordinates.longitude) {  
+    if (coordinates.latitude && coordinates.longitude) {
       setCenter({
         lat: coordinates.latitude,
         lng: coordinates.longitude,
@@ -28,14 +28,17 @@ export default function GoogleMapView({coordinates, listing}) {
     }
   }, [coordinates]);
 
-  
-
-  const onLoad = useCallback((map) => {
-    // You can just set center directly without bounds
-    map.setCenter(center);
-    map.setZoom(10);
-    setMap(map);
-  }, []);
+  const onLoad = useCallback(
+    (mapInstance) => {
+      mapInstance.setCenter({
+        lat: coordinates.latitude ?? 43.6532,
+        lng: coordinates.longitude ?? -79.3832,
+      });
+      mapInstance.setZoom(10);
+      setMap(mapInstance);
+    },
+    [coordinates]
+  ); // depend on coordinates
 
   const onUnmount = useCallback(() => {
     setMap(null);
@@ -61,4 +64,4 @@ export default function GoogleMapView({coordinates, listing}) {
       ))}
     </GoogleMap>
   );
-  }
+}
