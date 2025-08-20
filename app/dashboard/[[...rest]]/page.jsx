@@ -33,7 +33,7 @@ export default function DashboardPage() {
       .eq('createdBy', user?.primaryEmailAddress.emailAddress);
 
     if (error) {
-      toast.error('Error fetching user listings:', error);
+      toast.error('Error fetching user listings:', error.message);
       setListings([]);
     }else{
       setListings(data);
