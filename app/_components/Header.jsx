@@ -4,7 +4,15 @@ import React from "react";
 import Image from "next/image";
 import { Button } from "../../@/components/ui/button";
 import { usePathname } from "next/navigation";
-import { UserButton, useUser } from "@clerk/nextjs";
+import { UserButton, useUser, SignOutButton } from "@clerk/nextjs";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Header() {
   const path = usePathname();
@@ -27,7 +35,7 @@ export default function Header() {
               />
             </Link>
 
-            <nav className="flex ml-10 space-x-4">
+            <nav className="hidden md:flex ml-10 space-x-4">
               {/* <Link
                 href="/for-sale"
                 className={`text-gray-900 hover:text-[var(--brand)] text-md ${
@@ -57,13 +65,38 @@ export default function Header() {
 
           <div className="right-div flex items-center ml-auto space-x-4">
             <Button asChild className="bg-brand hover:bg-brand-dark text-white">
-              <Link href="/add-new-listing">
-                Post Ad
-              </Link>
+              <Link href="/add-new-listing">Post Ad</Link>
             </Button>
             {user ? (
               <div className="user-profile flex items-center space-x-2">
-                <UserButton />
+                {/* <UserButton /> */}
+                
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="hover:cursor-pointer">
+                    <Image
+                      src={user?.imageUrl || "/media/placeholder-image.svg"}
+                      alt="User Profile"
+                      width={35}
+                      height={35}
+                      className="rounded-full"
+                    />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="bg-white border-none mx-3">
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                      <Link href="/dashboard">Dashboard</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href="/dashboard/listings">My Listings</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <SignOutButton>
+                        <Link href="/">Sign Out</Link>
+                      </SignOutButton>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             ) : (
               <Button asChild variant="outline">

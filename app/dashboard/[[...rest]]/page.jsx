@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { Building } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
 import UserListing from '../_components/UserListing';
-import { toast } from "sonner";
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser();
@@ -33,11 +32,9 @@ export default function DashboardPage() {
       .eq('createdBy', user?.primaryEmailAddress.emailAddress);
 
     if (error) {
-      toast.error('Error fetching user listings:', error.message);
       setListings([]);
     }else{
       setListings(data);
-      toast.success('User listings fetched successfully!');
     }
   }
 
@@ -51,7 +48,7 @@ export default function DashboardPage() {
         <UserButton.UserProfilePage
           label="My Listing"
           labelIcon={<Building className="h-4 w-4" />}
-          url="/listing"
+          url="/listings"
         >
           <UserListing listings={listings} />
         </UserButton.UserProfilePage>
