@@ -1,32 +1,57 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import formatPrice from "@/lib/formatPrice";
 import getTimeAgo from "@/lib/getTimeAgo";
 import capitalizeText from "@/lib/capitalizeText";
+import { Button } from "@/components/ui/button";
+import { Loader } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
-export default function UserListing({ listings }) {
+export default function UserListing({ listings, onDelete }) {
+  const [deletingId, setDeletingId] = useState(null);
+
   return (
-    <div>
-      <h2 className="text-xl font-bold">My Listings</h2>
-      {listings.length > 0 ? (
-        listings.map((listing) => (
-          <Link
-            href={`/view-listing/${listing.id}`}
-            key={listing.id}
-            className="block hover:opacity-90 hover:translate-y-[-2px] transition-all duration-200 ease-in-out"
-          >
-            <div className="listing-item shadow-sm">
-              <Image
-                src={
-                  listing.listingImages?.[0]?.url ||
-                  "/media/placeholder-image.svg"
-                }
-                alt={`Apartment For Rent at: ${listing.address}`}
-                width={300}
-                height={200}
-                className="object-cover w-full h-[250px] rounded-lg rounded-b-none"
-              />
+    <div className="user-listing">
+      <h2 className="text-xl font-bold text-brand mb-5">My Listings</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {listings.length > 0 ? (
+          listings.map((listing) => (
+            <div key={listing.id} className="listing-item shadow-sm">
+              <div className="relative">
+                <Image
+                  src={
+                    listing.listingImages?.[0]?.url ||
+                    "/media/placeholder-image.svg"
+                  }
+                  alt={`Apartment For Rent at: ${listing.address}`}
+                  width={300}
+                  height={200}
+                  className="object-cover w-full h-[250px] rounded-lg rounded-b-none"
+                />
+               {/* Status Badge */}
+<span
+  className={`absolute top-2 left-2 px-3 py-1 text-xs font-semibold rounded-full shadow-md ${
+    listing.active ? "bg-green-600 text-white" : "bg-gray-500 text-white"
+  }`}
+>
+  {listing.active ? "Active" : "Draft"}
+</span>
+
+              </div>
+
               <div className="content bg-white rounded-lg rounded-t-none border-2 border-gray-50 p-2 pb-3">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="font-bold text-xl text-brand">
@@ -36,10 +61,12 @@ export default function UserListing({ listings }) {
                     className={`px-3 py-1 text-xs font-semibold rounded-full ${
                       listing.type === "rent"
                         ? "bg-blue-100 text-blue-700"
-                        : "bg-green-100 text-green-700"
+                        : listing.type === "sale"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-700 text-white"
                     }`}
                   >
-                    {capitalizeText(listing.type)}
+                    {capitalizeText(listing.type || "Not set")}
                   </span>
                 </div>
 
@@ -62,13 +89,63 @@ export default function UserListing({ listings }) {
                   </div>
                 </div>
                 <p className="text-sm text-gray-500 mb-2">{listing.address}</p>
+
+                <div className="flex mb-4 mt-2 gap-3 px-2">
+                  <Button className="bg-yellow-500 text-white w-1/2">
+                    <Link href={`/edit-listing/${listing.id}`}>
+                      Edit Listing
+                    </Link>
+                  </Button>
+                  <Button className="bg-brand hover:bg-brand-dark text-white w-1/2">
+                    <Link href={`/view-listing/${listing.id}`}>
+                      View Listing
+                    </Link>
+                  </Button>
+                </div>
+
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      className="bg-red-600 w-full hover:bg-red-700 hover:cursor-pointer text-white"
+                      type="button"
+                      disabled={deletingId === listing.id}
+                    >
+                      {deletingId === listing.id ? (
+                        <Loader className="w-4 h-4 animate-spin" />
+                      ) : (
+                        "Delete Listing"
+                      )}
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent className="bg-white">
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        className="bg-red-600 hover:bg-red-700 text-white hover:cursor-pointer"
+                        onClick={async () => {
+                          setDeletingId(listing.id);
+                          await onDelete(listing.id);
+                          setDeletingId(null);
+                        }}
+                      >
+                        Continue
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </div>
-          </Link>
-        ))
-      ) : (
-        <p>No listings found.</p>
-      )}
+          ))
+        ) : (
+          <p>No listings found.</p>
+        )}
+      </div>
     </div>
   );
 }

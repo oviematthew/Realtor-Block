@@ -70,9 +70,9 @@ export default function Header() {
             {user ? (
               <div className="user-profile flex items-center space-x-2">
                 {/* <UserButton /> */}
-                
+
                 <DropdownMenu>
-                  <DropdownMenuTrigger className="hover:cursor-pointer">
+                  <DropdownMenuTrigger asChild className="hover:cursor-pointer">
                     <Image
                       src={user?.imageUrl || "/media/placeholder-image.svg"}
                       alt="User Profile"
@@ -84,13 +84,13 @@ export default function Header() {
                   <DropdownMenuContent className="bg-white border-none mx-3">
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
+                    <DropdownMenuItem className="hover:bg-gray-100">
                       <Link href="/dashboard">Dashboard</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem className="hover:bg-gray-100">
                       <Link href="/dashboard/listings">My Listings</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem className="hover:bg-gray-100">
                       <SignOutButton>
                         <Link href="/">Sign Out</Link>
                       </SignOutButton>

@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useUser, UserProfile, UserButton } from "@clerk/nextjs";
+import { useUser, UserProfile } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Building } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
-import UserListing from '../_components/UserListing';
+import UserListing from "../_components/UserListing";
+import { toast } from "sonner";
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser();
@@ -25,16 +26,26 @@ export default function DashboardPage() {
   }, [user]);
 
   async function getUserListings() {
-    // Fetch user listings from the DB
-    const {data, error} = await supabase
-      .from('listing')
-      .select('*, listing_images(url, listing_id)')
-      .eq('createdBy', user?.primaryEmailAddress.emailAddress);
+    const { data, error } = await supabase
+      .from("listing")
+      .select("*, listingImages(url, listing_id)")
+      .eq("createdBy", user?.primaryEmailAddress.emailAddress);
 
     if (error) {
       setListings([]);
-    }else{
+    } else {
       setListings(data);
+    }
+  }
+
+  async function handleDeleteListing(id) {
+    const { error } = await supabase.from("listing").delete().eq("id", id).single();
+
+    if (error) {
+      toast.error("Error deleting listing");
+    } else {
+      toast.success("Listing deleted successfully.");
+      getUserListings(); // ✅ refresh listings instead of page reload
     }
   }
 
@@ -42,18 +53,19 @@ export default function DashboardPage() {
   if (!user) return <p>Access denied.</p>;
 
   return (
-    <div className="my-6 md:px-10 lg:px-32">
-      <UserProfile>
-        {/* Adds extra button on user profile with custom url of your choice - No need to add a route for this url */}
-        <UserButton.UserProfilePage
-          label="My Listing"
-          labelIcon={<Building className="h-4 w-4" />}
-          url="/listings"
+    <div className="my-6 flex flex-col items-center justify-center min-h-screen">
+      <div className="w-full max-w-4xl">
+        <UserProfile
         >
-          <UserListing listings={listings} />
-        </UserButton.UserProfilePage>
-      </UserProfile>
-
+          <UserProfile.Page
+            label="My Listings"
+            labelIcon={<Building className="h-4 w-4" />}
+            url="/listings"
+          >
+            <UserListing listings={listings} onDelete={handleDeleteListing} />
+          </UserProfile.Page>
+        </UserProfile>
+      </div>
     </div>
   );
 }
