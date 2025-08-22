@@ -7,13 +7,11 @@ import { usePathname } from "next/navigation";
 
 const containerStyle = {
   width: "100%",
-  height: "85vh",
+  height: "90vh",
   borderRadius: 10,
 };
 
-
-
-export default function GoogleMapView({coordinates, listing}) {
+export default function GoogleMapView({ coordinates, listing }) {
   const [center, setCenter] = useState({ lat: 43.6532, lng: -79.3832 });
   const [map, setMap] = useState(null);
   const [activeListing, setActiveListing] = useState(null);
