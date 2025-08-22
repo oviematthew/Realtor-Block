@@ -41,6 +41,7 @@ export default function ViewListingPage() {
 
   async function fetchListing() {
     setLoading(true);
+
     const { data, error } = await supabase
       .from("listing")
       .select("*, listingImages(url, listing_id)")
@@ -55,12 +56,17 @@ export default function ViewListingPage() {
       return;
     }
 
-    if (data.createdBy !== user?.primaryEmailAddress?.emailAddress) {
-      setAuthorized(false);
-    } else {
-      setAuthorized(true);
+    // check if the user is the author
+    const isAuthor = data.createdBy === user?.primaryEmailAddress?.emailAddress;
+
+    if (!isAuthor && data.status !== "active") {
+      // if not the author and listing is not active → block access
+      toast.error("This listing is not yet available.");
+      router.replace("/");
+      return;
     }
 
+    setAuthorized(isAuthor);
     setListing(data);
   }
 
@@ -124,8 +130,7 @@ export default function ViewListingPage() {
     <div className="max-w-5xl mx-auto p-5">
       <div className="title flex justify-between items-center mb-5">
         <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-brand">
-          {listing.propertyType}
-          {" "}for {capitalizeText(listing.type)}
+          {listing.propertyType} for {capitalizeText(listing.type)}
         </h1>
 
         {authorized ? (
