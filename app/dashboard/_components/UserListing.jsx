@@ -7,7 +7,7 @@ import formatPrice from "@/lib/formatPrice";
 import getTimeAgo from "@/lib/getTimeAgo";
 import capitalizeText from "@/lib/capitalizeText";
 import { Button } from "@/components/ui/button";
-import { Loader } from "lucide-react";
+import { Trash2, Loader } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -41,15 +41,16 @@ export default function UserListing({ listings, onDelete }) {
                   height={200}
                   className="object-cover w-full h-[250px] rounded-lg rounded-b-none"
                 />
-               {/* Status Badge */}
-<span
-  className={`absolute top-2 left-2 px-3 py-1 text-xs font-semibold rounded-full shadow-md ${
-    listing.active ? "bg-green-600 text-white" : "bg-gray-500 text-white"
-  }`}
->
-  {listing.active ? "Active" : "Draft"}
-</span>
-
+                {/* Status Badge */}
+                <span
+                  className={`absolute top-2 left-2 px-3 py-1 text-xs font-semibold rounded-full shadow-md ${
+                    listing.active
+                      ? "bg-green-600 text-white"
+                      : "bg-gray-500 text-white"
+                  }`}
+                >
+                  {listing.active ? "Active" : "Draft"}
+                </span>
               </div>
 
               <div className="content bg-white rounded-lg rounded-t-none border-2 border-gray-50 p-2 pb-3">
@@ -90,55 +91,51 @@ export default function UserListing({ listings, onDelete }) {
                 </div>
                 <p className="text-sm text-gray-500 mb-2">{listing.address}</p>
 
-                <div className="flex mb-4 mt-2 gap-3 px-2">
-                  <Button className="bg-yellow-500 text-white w-1/2">
-                    <Link href={`/edit-listing/${listing.id}`}>
-                      Edit Listing
-                    </Link>
+                <div className="flex mb-2 mt-2 gap-2 max-w-[100%]">
+                  <Button className="bg-white border-1 border-gray-600 w-1/3">
+                    <Link href={`/edit-listing/${listing.id}`}>Edit</Link>
                   </Button>
-                  <Button className="bg-brand hover:bg-brand-dark text-white w-1/2">
-                    <Link href={`/view-listing/${listing.id}`}>
-                      View Listing
-                    </Link>
+                  <Button className="bg-brand hover:bg-brand-dark text-white w-1/3">
+                    <Link href={`/view-listing/${listing.id}`}>View</Link>
                   </Button>
-                </div>
 
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button
-                      className="bg-red-600 w-full hover:bg-red-700 hover:cursor-pointer text-white"
-                      type="button"
-                      disabled={deletingId === listing.id}
-                    >
-                      {deletingId === listing.id ? (
-                        <Loader className="w-4 h-4 animate-spin" />
-                      ) : (
-                        "Delete Listing"
-                      )}
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent className="bg-white">
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This action cannot be undone.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction
-                        className="bg-red-600 hover:bg-red-700 text-white hover:cursor-pointer"
-                        onClick={async () => {
-                          setDeletingId(listing.id);
-                          await onDelete(listing.id);
-                          setDeletingId(null);
-                        }}
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        className="bg-red-600 hover:bg-red-700 hover:cursor-pointer text-white"
+                        type="button"
+                        disabled={deletingId === listing.id}
                       >
-                        Continue
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+                        {deletingId === listing.id ? (
+                          <Loader className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <Trash2 />
+                        )}
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="bg-white">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          className="bg-red-600 hover:bg-red-700 text-white hover:cursor-pointer"
+                          onClick={async () => {
+                            setDeletingId(listing.id);
+                            await onDelete(listing.id);
+                            setDeletingId(null);
+                          }}
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
               </div>
             </div>
           ))
