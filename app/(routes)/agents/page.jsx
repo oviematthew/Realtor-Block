@@ -53,10 +53,11 @@ export default function AgentsPage() {
         {agents.length > 0 ? (
           agents.map((agent) => (
             <Link
-  key={agent.createdBy} // use email as unique key
-  href={`/agent/${agent.createdBy}`} // use email in URL
+  key={agent.createdBy}
+  href={`/agent/${encodeURIComponent(agent.createdBy)}`}
   className="p-5 bg-white rounded-lg shadow hover:shadow-md transition"
 >
+
   <div className="flex flex-col items-center text-center">
     <Image
       src={agent.profileImage || "/media/placeholder-image.svg"}

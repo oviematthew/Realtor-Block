@@ -2,37 +2,44 @@
 
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { toast } from "sonner";
 
 export default function AgentDetailPage() {
-  const { agent } = useParams();
+  const params = useParams();
+  console.log("Params from URL:", params);
+
+  // 👇 decodes encoded email o decoded e.g james@gmail.com will be encoded to james%40@gmail.com
+const agentEmail = params.agentEmail ? decodeURIComponent(params.agentEmail) : null;
 
 
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
-    console.log(agent)
+    if (!agentEmail) return; // wait until param exists
     fetchListings();
-  }, [agent]);
+  }, [agentEmail]);
 
   async function fetchListings() {
     setLoading(true);
     const { data, error } = await supabase
-         .from("listing")
-         .select("*, listingImages(url, listing_id)")
-         .eq("createdBy", agent);
-   
-       if (error) {
-          toast.error("Failed to fetch listings.", { description: error.message });
-       } else {
-         setListings(data);
-       }
+      .from("listing")
+      .select("*, listingImages(url, listing_id)")
+      .eq("createdBy", agentEmail)
+      .eq("active", true);
+
+    console.log("Supabase response:", { data, error });
+
+    if (error) {
+      toast.error("Failed to fetch listings.", { description: error.message });
+    } else {
+      setListings(data || []);
+    }
 
     setLoading(false);
-    console.log(data);
   }
 
   if (loading) {
@@ -41,7 +48,7 @@ export default function AgentDetailPage() {
 
   return (
     <div className="max-w-6xl mx-auto p-5">
-      <h1 className="text-2xl font-bold mb-6">Listings by {agent}</h1>
+      <h1 className="text-2xl font-bold mb-6">Listings by {agentEmail}</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {listings.length > 0 ? (
           listings.map((listing) => (
