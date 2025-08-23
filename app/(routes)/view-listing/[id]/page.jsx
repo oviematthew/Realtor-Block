@@ -55,19 +55,18 @@ export default function ViewListingPage() {
       router.replace("/");
       return;
     }
+    setListing(data);
 
-    // check if the user is the author
-    const isAuthor = data.createdBy === user?.primaryEmailAddress?.emailAddress;
-
-    if (!isAuthor && data.status !== "active") {
-      // if not the author and listing is not active → block access
+    // if not the author and listing is not active → block access
+    if (!data.active) {
       toast.error("This listing is not yet available.");
       router.replace("/");
       return;
     }
 
+    // check if the user is the author
+    const isAuthor = data.createdBy === user?.primaryEmailAddress?.emailAddress;
     setAuthorized(isAuthor);
-    setListing(data);
   }
 
   function editListing() {

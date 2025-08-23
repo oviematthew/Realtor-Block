@@ -54,7 +54,7 @@ export default function AgentsPage() {
           agents.map((agent) => (
             <Link
   key={agent.createdBy}
-  href={`/agent/${encodeURIComponent(agent.createdBy)}`}
+  href={`/agent/${encodeURIComponent(agent.createdBy)}`} // encode email in browser
   className="p-5 bg-white rounded-lg shadow hover:shadow-md transition"
 >
 
