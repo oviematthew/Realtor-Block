@@ -106,8 +106,7 @@ export default function EditListing() {
       const { data, error } = await supabase
         .from("listing")
         .update({
-          ...valueData,
-          agentName: user?.firstName || user?.username || "Agent", // fallback for user first name or if no first name, uses their mandatory username
+          ...valueData
         })
         .eq("id", id)
         .select();
@@ -166,7 +165,7 @@ export default function EditListing() {
       return true;
     } catch (err) {
       toast.error("Something went wrong. error is:", err);
-      console.log(err)
+      console.log(err);
     } finally {
       setSubmitting(false);
     }
@@ -428,7 +427,13 @@ export default function EditListing() {
                         rows={6}
                         value={
                           values?.description ||
-                          `This is a ${values.propertyType || "condo"} for ${values.type} in ${listing?.address}. It has ${values?.bedroom || "2"} bedrooms and ${values?.bathroom || "2"} bathrooms.  `
+                          `This is a ${values.propertyType || "condo"} for ${
+                            values.type
+                          } in ${listing?.address}. It has ${
+                            values?.bedroom || "2"
+                          } bedrooms and ${
+                            values?.bathroom || "2"
+                          } bathrooms.  `
                         }
                         placeholder="Write a brief description of the property..."
                         className="w-full border rounded-md p-2 "
