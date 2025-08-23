@@ -54,7 +54,7 @@ export default function AgentsPage() {
           agents.map((agent) => (
             <Link
   key={agent.createdBy} // use email as unique key
-  href={`/agent/${encodeURIComponent(agent.createdBy)}`} // use email in URL
+  href={`/agent/${agent.createdBy}`} // use email in URL
   className="p-5 bg-white rounded-lg shadow hover:shadow-md transition"
 >
   <div className="flex flex-col items-center text-center">

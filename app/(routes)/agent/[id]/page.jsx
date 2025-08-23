@@ -26,7 +26,7 @@ export default function AgentDetailPage() {
          .eq("createdBy", agent);
    
        if (error) {
-         setListings([]);
+          toast.error("Failed to fetch listings.", { description: error.message });
        } else {
          setListings(data);
        }
