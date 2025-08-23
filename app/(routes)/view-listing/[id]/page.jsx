@@ -57,16 +57,16 @@ export default function ViewListingPage() {
     }
     setListing(data);
 
+    // check if the user is the author
+    const isAuthor = data.createdBy === user?.primaryEmailAddress?.emailAddress;
+    setAuthorized(isAuthor);
+
     // if not the author and listing is not active → block access
-    if (!data.active) {
+    if (!data.active && !isAuthor) {
       toast.error("This listing is not yet available.");
       router.replace("/");
       return;
     }
-
-    // check if the user is the author
-    const isAuthor = data.createdBy === user?.primaryEmailAddress?.emailAddress;
-    setAuthorized(isAuthor);
   }
 
   function editListing() {

@@ -72,27 +72,31 @@ export default function Header() {
                 {/* <UserButton /> */}
 
                 <DropdownMenu>
-                  <DropdownMenuTrigger asChild className="hover:cursor-pointer">
+                  <DropdownMenuTrigger asChild>
                     <Image
                       src={user?.imageUrl || "/media/placeholder-image.svg"}
                       alt="User Profile"
                       width={35}
                       height={35}
-                      className="rounded-full"
+                      className="rounded-full cursor-pointer"
                     />
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="bg-white border-none mx-3">
+
+                  <DropdownMenuContent className="bg-white border-none">
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="hover:bg-gray-100">
+
+                    <DropdownMenuItem asChild className="hover:cursor-pointer">
                       <Link href="/dashboard">Dashboard</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="hover:bg-gray-100">
+
+                    <DropdownMenuItem asChild className="hover:cursor-pointer">
                       <Link href="/dashboard/listings">My Listings</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="hover:bg-gray-100">
+
+                    <DropdownMenuItem asChild className="hover:cursor-pointer">
                       <SignOutButton>
-                        <Link href="/">Sign Out</Link>
+                        <button className="w-full text-left">Sign Out</button>
                       </SignOutButton>
                     </DropdownMenuItem>
                   </DropdownMenuContent>

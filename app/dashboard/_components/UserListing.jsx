@@ -81,10 +81,10 @@ export default function UserListing({ listings, onDelete }) {
                   <span className="mx-2 text-gray-400">|</span>
                   <div className="flex items-start gap-3">
                     <p className="text-sm text-gray-500 flex items-center gap-2">
-                      {listing.bedroom} {listing.bedroom > 1 ? "Beds" : "Bed"}
+                      {listing?.bedroom || 0} {listing.bedroom > 1 ? "Beds" : "Bed"}
                     </p>
                     <p className="text-sm text-gray-500 flex items-center gap-2">
-                      {listing.bathroom}{" "}
+                      {listing?.bathroom || 0}{" "}
                       {listing.bathroom > 1 ? "Baths" : "Bath"}
                     </p>
                   </div>
@@ -96,7 +96,7 @@ export default function UserListing({ listings, onDelete }) {
                     <Link href={`/edit-listing/${listing.id}`}>Edit</Link>
                   </Button>
                   <Button className="bg-brand hover:bg-brand-dark text-white w-1/3">
-                    <Link href={`/view-listing/${listing.id}`}>View</Link>
+                    <Link href={`/view-listing/${listing.id}`}>Preview</Link>
                   </Button>
 
                   <AlertDialog>
