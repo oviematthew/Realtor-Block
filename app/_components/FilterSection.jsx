@@ -19,7 +19,10 @@ export default function FilterSection({
     <div className="px-3 py-5 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
       {/* Bedrooms */}
       <Select onValueChange={setBedCount}>
-        <SelectTrigger className="w-[100%] cursor-pointer">
+        <SelectTrigger
+          className="w-[100%] cursor-pointer"
+          aria-label="Select number of bedrooms"
+        >
           <SelectValue placeholder="Bed" />
         </SelectTrigger>
         <SelectContent className="bg-white hover:cursor-pointer">
@@ -56,7 +59,10 @@ export default function FilterSection({
 
       {/* Bath */}
       <Select onValueChange={setBathCount}>
-        <SelectTrigger className="w-[100%] cursor-pointer">
+        <SelectTrigger
+          className="w-[100%] cursor-pointer"
+          aria-label="Select number of bathrooms"
+        >
           <SelectValue placeholder="Bath" />
         </SelectTrigger>
         <SelectContent className="bg-white hover:cursor-pointer">
@@ -93,7 +99,10 @@ export default function FilterSection({
 
       {/* Parking */}
       <Select onValueChange={setParkingCount}>
-        <SelectTrigger className="w-[100%] cursor-pointer">
+        <SelectTrigger
+          className="w-[100%] cursor-pointer"
+          aria-label="Select number of parking spaces"
+        >
           <SelectValue placeholder="Parking" />
         </SelectTrigger>
         <SelectContent className="bg-white hover:cursor-pointer">
@@ -134,7 +143,10 @@ export default function FilterSection({
           value === "All" ? setHomeType(null) : setHomeType(value)
         }
       >
-        <SelectTrigger className="w-[100%] cursor-pointer">
+        <SelectTrigger
+          className="w-[100%] cursor-pointer"
+          aria-label="Select home type"
+        >
           <SelectValue placeholder="Home Type" />
         </SelectTrigger>
         <SelectContent className="bg-white hover:cursor-pointer">
@@ -174,12 +186,16 @@ export default function FilterSection({
         </SelectContent>
       </Select>
 
+      {/* Listing Type */}
       <Select
         onValueChange={(value) =>
           value === "All" ? setType(null) : setType(value)
         }
       >
-        <SelectTrigger className="w-[100%] cursor-pointer">
+        <SelectTrigger
+          className="w-[100%] cursor-pointer"
+          aria-label="Select listing type (rent or sale)"
+        >
           <SelectValue placeholder="Type" />
         </SelectTrigger>
         <SelectContent className="bg-white hover:cursor-pointer">
@@ -198,7 +214,8 @@ export default function FilterSection({
           >
             <h2 className="flex items-center gap-2">
               {" "}
-              <FileText className="h-5 w-5 text-brand" />Rent
+              <FileText className="h-5 w-5 text-brand" />
+              Rent
             </h2>
           </SelectItem>
           <SelectItem
@@ -207,7 +224,8 @@ export default function FilterSection({
           >
             <h2 className="flex items-center gap-2">
               {" "}
-              <FileText className="h-5 w-5 text-brand" />Sale
+              <FileText className="h-5 w-5 text-brand" />
+              Sale
             </h2>
           </SelectItem>
         </SelectContent>

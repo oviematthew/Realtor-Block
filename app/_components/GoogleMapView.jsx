@@ -51,7 +51,7 @@ export default function GoogleMapView({ coordinates, listing }) {
       onLoad={onLoad}
       onUnmount={onUnmount}
     >
-      {/* Child components like markers */}
+      {/* markers */}
       {listing.map((item) => (
         <MarkerItem
           key={item.id}

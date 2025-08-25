@@ -151,6 +151,7 @@ export default function Listing({
                 >
                   <div className="listing-item shadow-sm">
                     <Image
+                      priority
                       src={
                         listing.listingImages[0]?.url ||
                         "/media/placeholder-image.svg"

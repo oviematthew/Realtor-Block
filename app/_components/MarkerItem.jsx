@@ -16,6 +16,11 @@ export default function MarkerItem({ item, isActive, setActiveListing }) {
         lng: item.coordinates.longitude,
       }}
       onClick={() => setActiveListing(item)}
+      // icon={{
+      //   url: "/media/marker-icon.png",
+      //   scaledSize: new window.google.maps.Size(30, 30),
+      // }}
+      aria-label={`Marker for ${item.propertyType} in ${item.address}`}
     >
       {isActive && (
         <OverlayView

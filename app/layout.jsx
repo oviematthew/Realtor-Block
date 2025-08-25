@@ -20,6 +20,15 @@ export default function RootLayout({ children }) {
   return (
     <ClerkProvider afterSignOutUrl="/sign-in">
       <html lang="en">
+        <head>
+          {/* Preconnect to Google Maps origins */}
+          <link rel="preconnect" href="https://maps.googleapis.com" />
+          <link
+            rel="preconnect"
+            href="https://maps.gstatic.com"
+            crossOrigin=""
+          />
+        </head>
         <body className={`${inter.variable}  antialiased`}>
           <Provider>
             {children}
