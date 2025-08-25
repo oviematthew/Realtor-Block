@@ -41,6 +41,7 @@ export default function GoogleAddressSearch({
         }}
         className="w-full p-2 border border-blue-500 font-text rounded text-center"
         placeholder={placeholder}
+        aria-label="Search for address" 
       />
     </div>
   );
