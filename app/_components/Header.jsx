@@ -104,7 +104,7 @@ export default function Header() {
               </div>
             ) : (
               <Button asChild variant="outline">
-                <Link href="sign-in">Login</Link>
+                <Link href="/sign-in">Login</Link>
               </Button>
             )}
           </div>
